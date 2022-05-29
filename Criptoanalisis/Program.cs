@@ -1,5 +1,5 @@
 using Datos.Base;
-using Datos.Implementaciones;
+using Datos.Repositorios;
 
 var builder = WebApplication.CreateBuilder(args);
 

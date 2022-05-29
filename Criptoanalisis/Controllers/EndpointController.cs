@@ -1,6 +1,6 @@
 ﻿using Datos;
 using Datos.Base;
-using Datos.Implementaciones;
+using Datos.Repositorios;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Criptoanalisis.Controllers

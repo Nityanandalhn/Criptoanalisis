@@ -1,7 +1,7 @@
 ﻿using Datos.Base;
 using Microsoft.EntityFrameworkCore;
 
-namespace Datos.Implementaciones
+namespace Datos.Repositorios
 {
     public class EndpointRepository : RepoBaseImpl<Entidades.Endpoint, EndpointParametrosContext>
     {
