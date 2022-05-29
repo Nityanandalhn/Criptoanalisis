@@ -1,4 +1,5 @@
 ﻿using Datos;
+using Datos.Base;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Criptoanalisis.Controllers

@@ -15,6 +15,6 @@ namespace Datos.Entidades
         [Key]
         [Column("id")]
         public int Id { get; set; }
-        public ICollection<Entidades.Parametros>? Parametros { get; set; }
+        public virtual ICollection<Relaciones.ParametrosEndpoint>? ParametrosEndpoints { get; set; }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using Datos;
+using Datos.Base;
+using Datos.Implementaciones;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Criptoanalisis.Controllers
@@ -7,7 +9,7 @@ namespace Criptoanalisis.Controllers
     [ApiController]
     public class EndpointController : CrudController<Datos.Entidades.Endpoint, EndpointParametrosContext>
     {
-        public EndpointController(IRepoBase<Datos.Entidades.Endpoint, EndpointParametrosContext> repo, ILogger<EndpointController> logger) : base(repo, logger)
+        public EndpointController(EndpointRepository repo, ILogger<EndpointController> logger) : base(repo, logger)
         {
         }
 

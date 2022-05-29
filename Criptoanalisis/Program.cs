@@ -1,4 +1,5 @@
-using Datos;
+using Datos.Base;
+using Datos.Implementaciones;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,8 @@ builder.Services.AddSwaggerGen();
 /// Preparo mi servicio para poder inyectar sus implementaciones.
 /// </summary>
 builder.Services.AddScoped(typeof(IRepoBase<,>), typeof(RepoBaseImpl<,>));
+builder.Services.AddScoped(typeof(EndpointRepository));
+builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles);
 
 var app = builder.Build();
 

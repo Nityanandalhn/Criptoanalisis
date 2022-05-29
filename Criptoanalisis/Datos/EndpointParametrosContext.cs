@@ -17,10 +17,11 @@ namespace Datos
         //static EndpointContext() => NpgsqlConnection.GlobalTypeMapper.MapEnum<Metodos>();
         public DbSet<Entidades.Endpoint>? Endpoints { get; set; }
         public DbSet<Entidades.Parametros>? Parametros { get; set; }
-        //public DbSet<Relaciones.ParametrosEndpoint>? ParametrosEndpoints { get; set; }
+        public DbSet<Relaciones.ParametrosEndpoint>? ParametrosEndpoints { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
-            => builder.UseNpgsql(Criptoanalisis.Properties.Resources.ConnectionStringProyecto)
+            => builder//.UseLazyLoadingProxies()
+                    .UseNpgsql(Criptoanalisis.Properties.Resources.ConnectionStringProyecto)
                     .LogTo(Console.WriteLine)
                     .EnableSensitiveDataLogging();
 
@@ -28,10 +29,10 @@ namespace Datos
         {
             base.OnModelCreating(builder);
             builder.HasDefaultSchema("public");
-            builder.Entity<Entidades.Parametros>().HasMany(p => p.Endpoints).WithMany(e => e.Parametros);
-            /*builder.Entity<Relaciones.ParametrosEndpoint>().HasKey(pe => new { pe.ParametroId, pe.EndpointId });
+            //builder.Entity<Entidades.Parametros>().HasMany(p => p.Endpoints).WithMany(e => e.Parametros);
+            builder.Entity<Relaciones.ParametrosEndpoint>().HasKey(pe => new { pe.ParametroId, pe.EndpointId });
             builder.Entity<Relaciones.ParametrosEndpoint>().HasOne(pe => pe.Endpoint).WithMany(e => e.ParametrosEndpoints).HasForeignKey(pe => pe.EndpointId);
-            builder.Entity<Relaciones.ParametrosEndpoint>().HasOne(pe => pe.Parametros).WithMany(p => p.ParametrosEndpoints).HasForeignKey(pe => pe.ParametroId);*/
+            builder.Entity<Relaciones.ParametrosEndpoint>().HasOne(pe => pe.Parametros).WithMany(p => p.ParametrosEndpoints).HasForeignKey(pe => pe.ParametroId);
         }
         //.Entity<Entidades.Endpoint>();
         //.HasPostgresEnum<Metodos>()

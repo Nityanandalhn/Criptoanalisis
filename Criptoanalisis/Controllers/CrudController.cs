@@ -1,4 +1,4 @@
-﻿using Datos;
+﻿using Datos.Base;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Criptoanalisis.Controllers
@@ -15,12 +15,12 @@ namespace Criptoanalisis.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public IActionResult Get() => Ok(_repo.Get());
+        public virtual IActionResult Get() => Ok(_repo.Get());
 
         [HttpGet("{pos}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Get(int pos)
+        public virtual IActionResult Get(int pos)
         {
             try { return Ok(_repo.GetAtPos(pos)); }
             catch { return NotFound(); }
@@ -29,7 +29,7 @@ namespace Criptoanalisis.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult Post([FromBody] Entity elemento)
+        public virtual IActionResult Post([FromBody] Entity elemento)
         {
             try { return Created(nameof(Get), _repo.Create(elemento)); } 
             catch { return BadRequest(); }
@@ -38,7 +38,7 @@ namespace Criptoanalisis.Controllers
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Put([FromBody] Entity elemento)
+        public virtual IActionResult Put([FromBody] Entity elemento)
         {
             try { return Accepted(_repo.Update(elemento)); } 
             catch { return NotFound(); }

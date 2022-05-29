@@ -1,4 +1,4 @@
-﻿/*using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Datos.Relaciones
@@ -12,8 +12,7 @@ namespace Datos.Relaciones
         [Required]
         [Column("cod_prm")]
         public int ParametroId { get; set; }
-        public Entidades.Endpoint? Endpoint { get; set; }
-        public Entidades.Parametros? Parametros { get; set; }
+        public virtual Entidades.Endpoint? Endpoint { get; set; }
+        public virtual Entidades.Parametros? Parametros { get; set; }
     }
 }
-*/

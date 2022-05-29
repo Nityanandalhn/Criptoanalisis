@@ -1,6 +1,7 @@
-﻿using System.Linq.Expressions;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
-namespace Datos
+namespace Datos.Base
 {
     public interface IRepoBase<Entidad,Contexto> : IDisposable where Entidad : class where Contexto : class
     {
