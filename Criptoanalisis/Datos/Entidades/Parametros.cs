@@ -15,6 +15,6 @@ namespace Datos.Entidades
         [Key]
         [Column("id")]
         public int Id { get; set; }
-        public ICollection<Entidades.Endpoint>? Endpoints { get; set; }
+        public ICollection<Entidades.Endpoint>? EndpointsS { get; set; }
     }
 }
