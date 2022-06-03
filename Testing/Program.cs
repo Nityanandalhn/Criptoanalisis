@@ -3,6 +3,7 @@ using System.Dynamic;
 using Datos;
 using Newtonsoft.Json.Linq;
 using System.ComponentModel;
+using Criptoanalisis;
 
 void IncluirPropiedad(dynamic expando, string propiedad, object valor)
     => ((IDictionary<string, object>)expando!)[propiedad] = valor;
@@ -41,7 +42,7 @@ string url = "https://www.mexc.com/open/api/v2/market/ticker";
 List<string> monedas = new () { "ETH_USDT", "ETH_BTC" };
 
 Console.WriteLine("Realizando llamada a MEXC\n");
-ConsultarApi(url, para, monedas);
+ConsultarApi<Modelo>(url, para, monedas);
 
 url = "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=ETH&tsyms=BTC,USDT";
 para = new()
@@ -53,40 +54,44 @@ para = new()
 monedas = new() { "ETH" };
 
 Console.WriteLine("\nRealizando llamada a CRYPTOCOMPARE\n");
-ConsultarApi(url, para, monedas);
+ConsultarApi<Modelo>(url, para, monedas);
 
 //Pendiente, generificar el modelo y devolver listado de elementos
-void ConsultarApi(string url, Dictionary<string,string> parametros, List<string> monedas)
+void ConsultarApi<T>(string url, Dictionary<string,string> parametros, List<string> monedas) where T: new()
 {
+    MetaDatosJson attr = (MetaDatosJson) Attribute.GetCustomAttribute(typeof(T), typeof(MetaDatosJson))! 
+                            ?? throw new NotSupportedException("Es necesario aplicar el atributo MetaDatosJson sobre la clase a instanciar");
+
     string respuesta = JsonUtils.ReadUrl(url);
 
     monedas.ForEach(moneda =>
     {
         try
         {
-            JsonUtils.BuscarPropiedad(respuesta, parametros["Nombre"]).Where(x => x[parametros["Nombre"]]!.ToString().Contains(moneda))
+            JsonUtils.BuscarPropiedad(respuesta, parametros[attr.Clave]).Where(x => x[parametros[attr.Clave]]!.ToString().Contains(moneda))
                 .ToList().ForEach(jTokenPropiedades =>
                 {
-                    Modelo modelo = new();
+                    T modelo = new();
 
-                    typeof(Modelo).GetProperties().ToList()
-                    .Where(propiedad => parametros.ContainsKey(propiedad.Name) && jTokenPropiedades[parametros["Nombre"]]!.ToString().Equals(moneda)).ToList()
+                    typeof(T).GetProperties().ToList()
+                    .Where(propiedad => parametros.ContainsKey(propiedad.Name) && jTokenPropiedades[parametros[attr.Clave]]!.ToString().Equals(moneda)).ToList()
                     .ForEach(prop =>
                     {
                         try
                         {
                             JsonUtils.ExtraerListadoDeValoresDePropiedad(jTokenPropiedades.ToString(), parametros[prop.Name]).ForEach(valor =>
                             {
-                                prop.SetValue(modelo, TypeDescriptor.GetConverter(prop.PropertyType).ConvertFromString(valor!.ToString().Replace('.', ',')));
+                                prop.SetValue(modelo, TypeDescriptor.GetConverter(prop.PropertyType).ConvertFromString(valor!.Replace('.', ',')));
                             });
                         }
                         catch (Exception ex)
                         {
                             Console.WriteLine(ex.ToString());
+                            throw new InvalidCastException($"No ha sido posible mapear el objeto.");
                         }
                     });
 
-                    if(modelo.Nombre != null)
+                    if(!modelo.Equals(new T()))
                         Console.WriteLine(modelo);
                 });
         }
@@ -97,6 +102,7 @@ void ConsultarApi(string url, Dictionary<string,string> parametros, List<string>
     });
 }
 
+[MetaDatosJson("Nombre")]
 public class Modelo
 {
     public string? Nombre { get; set; }
