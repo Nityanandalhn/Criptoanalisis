@@ -52,7 +52,17 @@ namespace Datos
 
         public static List<T>? DevolverListaGenericaFromURL<T>(string url) => JsonConvert.DeserializeObject<List<T>>(ReadUrl(url));
         public static List<T>? DevolverListaGenerica<T>(string jsonString) => JsonConvert.DeserializeObject<List<T>>(jsonString);
-        public static T? DevolverGenerico<T>(string jsonString) => JsonConvert.DeserializeObject<T>(jsonString);
+        public static T? DevolverGenerico<T>(string jsonString)
+        {
+            try
+            {
+                return JsonConvert.DeserializeObject<T>(jsonString);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidCastException("Fallo al deserializar el objeto como Json", ex);
+            }
+        }
 
         // https://stackoverflow.com/questions/37335030/deserialize-part-of-json-string-array-in-c-sharp
         /*public static People DevolverPeople(string url)

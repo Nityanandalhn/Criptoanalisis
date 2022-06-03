@@ -4,6 +4,7 @@ using Datos;
 using Newtonsoft.Json.Linq;
 using System.ComponentModel;
 using Criptoanalisis;
+using System.Reflection;
 
 void IncluirPropiedad(dynamic expando, string propiedad, object valor)
     => ((IDictionary<string, object>)expando!)[propiedad] = valor;
@@ -35,14 +36,15 @@ Dictionary<string, string> para = new() {
     { "Alto", "high" },
     { "Puja", "bid" },
     { "Ultimo", "last" },
-    { "Open", "open"}
+    { "Fecha", "open"}
 };
 
 string url = "https://www.mexc.com/open/api/v2/market/ticker";
-List<string> monedas = new () { "ETH_USDT", "ETH_BTC" };
+List<string> monedas = new () { "ETH_USDT", "ETH_BTC", "MX_ETH", "ANOM_USDT" };
 
 Console.WriteLine("Realizando llamada a MEXC\n");
-ConsultarApi<Modelo>(url, para, monedas);
+var test = ConsultarApi<Modelo>(url, para, monedas);
+test.ForEach(x => Console.WriteLine(x));
 
 url = "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=ETH&tsyms=BTC,USDT";
 para = new()
@@ -53,53 +55,92 @@ para = new()
 };
 monedas = new() { "ETH" };
 
-Console.WriteLine("\nRealizando llamada a CRYPTOCOMPARE\n");
-ConsultarApi<Modelo>(url, para, monedas);
+//Console.WriteLine("\nRealizando llamada a CRYPTOCOMPARE\n");
+//test = ConsultarApi<Modelo>(url, para, monedas);
+//test.ForEach(x => Console.WriteLine(x));
 
-//Pendiente, generificar el modelo y devolver listado de elementos
-void ConsultarApi<T>(string url, Dictionary<string,string> parametros, List<string> monedas) where T: new()
+List<T> ConsultarApi<T>(string url, Dictionary<string,string> parametros, List<string> filtros) where T: new()
 {
+    //Busco mi atributo necesario para poder realizar el filtrado, si no existe termino el proceso
     MetaDatosJson attr = (MetaDatosJson) Attribute.GetCustomAttribute(typeof(T), typeof(MetaDatosJson))! 
                             ?? throw new NotSupportedException("Es necesario aplicar el atributo MetaDatosJson sobre la clase a instanciar");
-
+    //Obtengo el JsonString
     string respuesta = JsonUtils.ReadUrl(url);
 
-    monedas.ForEach(moneda =>
+    List<T> res = new();
+
+    //Recorro el listado de claves por las que filtrar, en paralelo que el proceso es bastante pesado pero no hay problemas de sincronicidad :>
+    Parallel.ForEach(filtros, filtro =>
     {
         try
         {
-            JsonUtils.BuscarPropiedad(respuesta, parametros[attr.Clave]).Where(x => x[parametros[attr.Clave]]!.ToString().Contains(moneda))
-                .ToList().ForEach(jTokenPropiedades =>
+            //Primer filtrado, devuelvo un listado de JToken que contenga cualquier string con el filtro indicado por mi atributo
+            List<JToken> lista = JsonUtils.BuscarPropiedad(respuesta, parametros[attr.Clave])
+                .Where(x => x[parametros[attr.Clave]]!.ToString().Contains(filtro))
+                .ToList();
+
+            //Recorro el listado devuelto por el filtrado principal
+            Parallel.ForEach(lista, jTokenPropiedades =>
+            {
+                //Filtro las propiedades de la clase encontradas en el mapa de filtros y en las propiedades JToken
+                List<PropertyInfo> propiedades = typeof(T).GetProperties().ToList()
+                    .Where(propiedad => parametros.ContainsKey(propiedad.Name) && jTokenPropiedades[parametros[attr.Clave]]!.ToString().Equals(filtro))
+                    .ToList();
+
+                if (propiedades.Count > 0)
                 {
-                    T modelo = new();
+                    T temp = new();
 
-                    typeof(T).GetProperties().ToList()
-                    .Where(propiedad => parametros.ContainsKey(propiedad.Name) && jTokenPropiedades[parametros[attr.Clave]]!.ToString().Equals(moneda)).ToList()
-                    .ForEach(prop =>
+                    Parallel.ForEach(propiedades, prop =>
                     {
-                        try
+                        //Segundo filtrado, extraigo listado con la propiedad que necesito a partir del JToken y recorro los valores
+                        JsonUtils.ExtraerListadoDeValoresDePropiedad(jTokenPropiedades.ToString(), parametros[prop.Name]).ForEach(valor =>
                         {
-                            JsonUtils.ExtraerListadoDeValoresDePropiedad(jTokenPropiedades.ToString(), parametros[prop.Name]).ForEach(valor =>
+                            //Pequeña pausa por si es un número con comas :(
+                            valor = prop.PropertyType == typeof(double) || prop.PropertyType == typeof(float) ? valor!.Replace('.', ',') : valor;
+                            try
                             {
-                                prop.SetValue(modelo, TypeDescriptor.GetConverter(prop.PropertyType).ConvertFromString(valor!.Replace('.', ',')));
-                            });
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine(ex.ToString());
-                            throw new InvalidCastException($"No ha sido posible mapear el objeto.");
-                        }
-                    });
+                                //Intento asignar valor a lo bruto al objeto solicitado
+                                prop.SetValue(temp, TypeDescriptor.GetConverter(prop.PropertyType).ConvertFromString(valor!));
+                            }
+                            catch
+                            {
+                                try
+                                {
+                                    //Asignación fallida, intento lanzar el Json deserializer por si fuera un dto y pudiera rescatarlo
+                                    prop.SetValue(temp, typeof(JsonUtils)
+                                        //Obtengo mi método genérico de deserialización
+                                        .GetMethod(nameof(JsonUtils.DevolverGenerico))!
+                                        //Asigno el genérico 'esperable'
+                                        .MakeGenericMethod(prop.PropertyType)
+                                        //Llamo al método con su parámetro
+                                        .Invoke(null, new object[] { valor! }));
+                                }
+                                catch (Exception ex) 
+                                {
+                                    //Todo ha salido mal, termino el proceso
+                                    throw new InvalidCastException($"No ha sido posible mapear la propiedad {prop.Name}", ex);
 
-                    if(!modelo.Equals(new T()))
-                        Console.WriteLine(modelo);
-                });
+                                    //WIP - En este punto existe posibilidad de recursividad para crear un árbol de objetos de cualquier profundidad.
+                                    //Solo tendría que cambiar los parámetros del método a string jsoNString en lugar de string url y pulir la lógica un poco más.
+                                    //No quiero olvidarme por si vuelvo a este método en un futuro, ahora mismo se me escapa de las manos, un nivel de profundidad es suficiente.
+                                }
+                            }
+                        });
+                    });
+                    //Todo ha salido bien, añado objeto al listado de resultados
+                    res.Add(temp);
+                }
+            });
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.StackTrace);
+            //WIP - Puede que algún día esto ascienda a log.error -> fichero logs
+            Console.WriteLine($"Fallo de deserialización con filtro: {filtro} - {ex.StackTrace}");
         }
     });
+
+    return res;
 }
 
 [MetaDatosJson("Nombre")]
@@ -116,5 +157,5 @@ public class Modelo
     public DateTimeOffset Fecha { get; set; }
     public string? Intercambiado { get; set; }
 
-    public override string ToString() => $"Nombre: {Nombre} Intercambiado: {Intercambiado} Volumen: {Volumen} Puja: {Puja} Abierto: {Abierto} Alto: {Alto} Bajo: {Bajo} Ultimo: {Ultimo}";
+    public override string ToString() => $"Nombre: {Nombre} Intercambiado: {Intercambiado} Volumen: {Volumen} Puja: {Puja} Abierto: {Abierto} Alto: {Alto} Bajo: {Bajo} Ultimo: {Ultimo} Fecha: {Fecha}";
 }
