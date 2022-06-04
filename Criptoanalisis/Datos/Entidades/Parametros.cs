@@ -7,11 +7,14 @@ namespace Datos.Entidades
     public class Parametros
     {
         [Required]
-        [Column("entrada")]
-        public string? Entrada { get; set; }
+        [Column("valor")]
+        public string? Valor { get; set; }
         [Required]
-        [Column("salida")]
-        public string? Salida { get; set; }
+        [Column("mapping_modelo")]
+        public string? Mapea { get; set; }
+        [Required]
+        [Column("tipo")]
+        public string? Tipo { get; set; }
         [Key]
         [Column("id")]
         public int Id { get; set; }

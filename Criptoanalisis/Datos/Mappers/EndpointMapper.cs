@@ -10,9 +10,7 @@ namespace Datos.Mappers
             Id = endpoint.Id,
             Tipo = endpoint.Tipo,
             Url = endpoint.Url,
-            Parametros = endpoint.ParametrosEndpoints!.Select(x => x.Parametros!.Salida)
-                 .Concat(endpoint.ParametrosEndpoints!.Select(x => x.Parametros!.Entrada))
-                 .ToList()!
+            Parametros = endpoint.ParametrosEndpoints!.Select(x => x.Parametros!.Valor).ToList()!
         };
 
         public static Endpoints FromDto(EndpointDto dto) => new()

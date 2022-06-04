@@ -45,17 +45,14 @@ namespace Datos.Repositorios
             GC.SuppressFinalize(this);
         }
         public void GuardarCambios() => DbContext.SaveChanges();
-        public Endpoints IncluirParametro(Endpoints edp, Parametros parametro)
+        public void IncluirParametro(Endpoints edp, Parametros parametro)
         {
-            edp.ParametrosEndpoints!.Add(new ParametrosEndpoint()
+            DbContext.ParametrosEndpoints!.Add(new ParametrosEndpoint()
             {
                 EndpointId = edp.Id,
-                ParametroId = parametro.Id,
-                Endpoints = edp,
-                Parametros = parametro
+                ParametroId = parametro.Id
             });
             DbContext.SaveChanges();
-            return edp;
         }
     }
 }

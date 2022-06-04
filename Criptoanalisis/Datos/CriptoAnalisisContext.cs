@@ -19,7 +19,7 @@ namespace Datos
         //static EndpointContext() => NpgsqlConnection.GlobalTypeMapper.MapEnum<Metodos>();
         public DbSet<Endpoints>? Endpoints { get; set; }
         public DbSet<Parametros>? Parametros { get; set; }
-        public DbSet<Relaciones.ParametrosEndpoint>? ParametrosEndpoints { get; set; }
+        public DbSet<ParametrosEndpoint>? ParametrosEndpoints { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
             => builder//.UseLazyLoadingProxies()

@@ -28,6 +28,13 @@ namespace Criptoanalisis.Controllers
             catch { return NotFound(); }
         }
 
+        [HttpGet("Parametros")]
+        public IActionResult GetParametro()
+        {
+            try { return Ok(_service.GetAllParametersWithEndpointInfo()); }
+            catch { return NotFound(); }
+        }
+
         [HttpPost("NuevoEndpoint")]
         public IActionResult PostEndpoint([FromBody] EndpointCreateDto dto)
         {
@@ -35,7 +42,7 @@ namespace Criptoanalisis.Controllers
             catch { return BadRequest(); }
         }
 
-        [HttpPut("ActualizarEndpoint{id}")]
+        [HttpPut("ActualizarEndpoint/{id}")]
         public IActionResult PutEndpoint([FromBody] EndpointCreateDto dto, int id)
         {
             try { return Accepted(nameof(GetEndpoint), _service.UpdateEndpoint(dto, id)); }
@@ -44,7 +51,7 @@ namespace Criptoanalisis.Controllers
         }
 
         [HttpPut("IncluirParametroEnEndpoint/{id}")]
-        public IActionResult Incluir([FromBody] Parametros parametro, int id)
+        public IActionResult Incluir([FromBody] ParametroDto parametro, int id)
         {
             try { return Accepted(nameof(GetEndpoint), _service.IncluirParametroEnEndpoint(parametro, id)); }
             catch (ArgumentOutOfRangeException) { return NotFound(); }

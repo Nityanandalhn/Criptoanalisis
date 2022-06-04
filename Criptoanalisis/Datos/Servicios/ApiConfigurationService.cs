@@ -20,11 +20,17 @@ namespace Datos.Servicios
         public List<EndpointDto> GetAllEndpointsWithParameterInfo() => 
             _endpointRepo.Get().Select(x => EndpointMapper.FromEntity(x)).ToList();
 
+        public List<ParametroDto> GetAllParametersWithEndpointInfo() =>
+            _parametrosRepo.Get().Select(x => ParametrosMapper.FromEntity(x)).ToList();
+
         public List<Endpoints> GetEndpointBy(Expression<Func<Endpoints, bool>> predicado) => 
             _endpointRepo.GetBy(predicado).ToList();
 
         public Endpoints CreateEndpoint(EndpointCreateDto dto) =>
             _endpointRepo.Create(EndpointMapper.FromCreateDto(dto));
+
+        public Parametros CreateParametro(ParametroCreateDto dto) =>
+            _parametrosRepo.Create(ParametrosMapper.FromCreateDto(dto));
 
         public Endpoints UpdateEndpoint(EndpointCreateDto dto, int id)
         {
@@ -37,18 +43,19 @@ namespace Datos.Servicios
         public Endpoints DeleteEndpoint(EndpointDto dto) =>
             _endpointRepo.Delete(EndpointMapper.FromDto(dto));
 
-        public EndpointDto IncluirParametroEnEndpoint(Parametros parametro, int id)
+        public EndpointDto IncluirParametroEnEndpoint(ParametroDto dto, int id)
         {
             Parametros param;
             try
             {
-                param = ObtenerParametroPorId(parametro.Id);
+                param = ObtenerParametroPorId(dto.Id);
             } 
             catch
             {
-                param = parametro;
+                param = _parametrosRepo.Create(ParametrosMapper.FromDto(dto));
             }
-            return EndpointMapper.FromEntity(_endpointRepo.IncluirParametro(ObtenerEndpointPorId(id), param));
+            _endpointRepo.IncluirParametro(ObtenerEndpointPorId(id), param);
+            return EndpointMapper.FromEntity(ObtenerEndpointPorId(id));
         }
 
         private Endpoints ObtenerEndpointPorId(int id) 
