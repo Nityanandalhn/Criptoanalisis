@@ -12,7 +12,7 @@ using NpgsqlTypes;
 
 namespace Datos
 {
-    public class EndpointParametrosContext : DbContext
+    public class CriptoAnalisisContext : DbContext
     {
         //static EndpointContext() => NpgsqlConnection.GlobalTypeMapper.MapEnum<Metodos>();
         public DbSet<Entidades.Endpoint>? Endpoints { get; set; }

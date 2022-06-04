@@ -7,7 +7,7 @@ namespace Criptoanalisis.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EndpointController : CrudController<Datos.Entidades.Endpoint, EndpointParametrosContext>
+    public class EndpointController : CrudController<Datos.Entidades.Endpoint, CriptoAnalisisContext>
     {
         public EndpointController(EndpointRepository repo, ILogger<EndpointController> logger) : base(repo, logger)
         {

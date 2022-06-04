@@ -6,9 +6,9 @@ namespace Criptoanalisis.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ParametrosController : CrudController<Datos.Entidades.Parametros, EndpointParametrosContext>
+    public class ParametrosController : CrudController<Datos.Entidades.Parametros, CriptoAnalisisContext>
     {
-        public ParametrosController(IRepoBase<Datos.Entidades.Parametros, EndpointParametrosContext> repo, ILogger<ParametrosController> logger) : base(repo, logger)
+        public ParametrosController(IRepoBase<Datos.Entidades.Parametros, CriptoAnalisisContext> repo, ILogger<ParametrosController> logger) : base(repo, logger)
         {
         }
 
