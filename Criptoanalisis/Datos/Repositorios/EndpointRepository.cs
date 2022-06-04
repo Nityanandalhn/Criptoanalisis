@@ -20,7 +20,8 @@ namespace Datos.Repositorios
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            RepoContext.Dispose();
+            GC.SuppressFinalize(this);
         }
 
         public IQueryable<Entidades.Endpoint> Get()

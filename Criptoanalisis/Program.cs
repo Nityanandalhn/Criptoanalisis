@@ -1,5 +1,7 @@
+using Datos;
 using Datos.Base;
 using Datos.Repositorios;
+using Datos.Servicios;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +10,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped(typeof(IRepoBase<,>), typeof(RepoBaseImpl<,>));
-builder.Services.AddScoped(typeof(EndpointRepository));
+builder.Services.AddScoped<EndpointRepository>();
+builder.Services.AddScoped<EndpointService>();
 builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles);
 
 var app = builder.Build();

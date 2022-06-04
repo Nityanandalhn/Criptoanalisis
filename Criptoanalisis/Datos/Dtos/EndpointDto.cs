@@ -7,5 +7,7 @@
         public string? Tipo { get; set; }
 
         public int Id { get; set; }
+
+        public List<string>? Parametros { get; set; }
     }
 }

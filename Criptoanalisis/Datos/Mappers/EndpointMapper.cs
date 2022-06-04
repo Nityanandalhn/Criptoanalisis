@@ -4,14 +4,15 @@ namespace Datos.Mappers
 {
     public class EndpointMapper
     {
-        public static EndpointDto fromEntity(Entidades.Endpoint endpoint) => new ()
+        public static EndpointDto FromEntity(Entidades.Endpoint endpoint) => new ()
         {
             Id = endpoint.Id,
             Tipo = endpoint.Tipo,
-            Url = endpoint.Url
+            Url = endpoint.Url,
+            Parametros = endpoint.ParametrosEndpoints.Select(x => x.Parametros.Salida).ToList()
         };
 
-        public static Entidades.Endpoint fromDto(EndpointDto dto) => new()
+        public static Entidades.Endpoint FromDto(EndpointDto dto) => new()
         {
             Url = dto.Url,
             Tipo = dto.Tipo,

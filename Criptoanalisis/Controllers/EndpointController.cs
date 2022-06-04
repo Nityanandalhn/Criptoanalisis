@@ -1,23 +1,27 @@
 ﻿using Datos;
 using Datos.Base;
 using Datos.Repositorios;
+using Datos.Servicios;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Criptoanalisis.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EndpointController : CrudController<Datos.Entidades.Endpoint, CriptoAnalisisContext>
+    public class EndpointController : ControllerBase
     {
-        public EndpointController(EndpointRepository repo, ILogger<EndpointController> logger) : base(repo, logger)
+        protected readonly ILogger<EndpointController> _logger;
+        protected readonly EndpointService _service;
+        public EndpointController(EndpointService service, ILogger<EndpointController> logger)
         {
+            _logger = logger;
+            _service = service;
         }
 
         [HttpGet("Por id")]
-        public IActionResult BuscarGET(int id)
+        public IActionResult Get()
         {
-            _logger.LogInformation($"Buscando por id {id}");
-            try { return Ok(_repo.GetBy(x => x.Id == id)); } catch { return NotFound(); }
+            try { return Ok(_service.GetAllEndpoints()); } catch { return NotFound(); }
         }
     }
 }

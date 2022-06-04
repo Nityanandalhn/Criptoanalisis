@@ -1,4 +1,6 @@
-﻿using Datos.Repositorios;
+﻿using Datos.Dtos;
+using Datos.Mappers;
+using Datos.Repositorios;
 
 namespace Datos.Servicios
 {
@@ -10,6 +12,6 @@ namespace Datos.Servicios
             endpointRepo = repo;
         }
 
-
+        public List<EndpointDto> GetAllEndpoints() => endpointRepo.Get().Select(x => EndpointMapper.FromEntity(x)).ToList();
     }
 }
