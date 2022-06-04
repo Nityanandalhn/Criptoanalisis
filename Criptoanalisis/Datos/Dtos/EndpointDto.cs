@@ -8,6 +8,6 @@
 
         public int Id { get; set; }
 
-        public List<string>? Parametros { get; set; }
+        public IEnumerable<string>? Parametros { get; set; }
     }
 }

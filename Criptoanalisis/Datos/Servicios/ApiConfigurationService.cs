@@ -17,8 +17,8 @@ namespace Datos.Servicios
             _parametrosRepo = parametrosRepo;
         }
 
-        public List<EndpointDto> GetAllEndpointsWithParameterInfo() => 
-            _endpointRepo.Get().Select(x => EndpointMapper.FromEntity(x)).ToList();
+        public IEnumerable<EndpointDto> GetAllEndpointsWithParameterInfo() => 
+            _endpointRepo.Get().Select(x => EndpointMapper.FromEntity(x));
 
         public List<ParametroDto> GetAllParametersWithEndpointInfo() =>
             _parametrosRepo.Get().Select(x => ParametrosMapper.FromEntity(x)).ToList();
