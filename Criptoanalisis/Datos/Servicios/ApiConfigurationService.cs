@@ -52,7 +52,7 @@ namespace Datos.Servicios
             } 
             catch
             {
-                param = _parametrosRepo.Create(ParametrosMapper.FromDto(dto));
+                param = CreateParametro(ParametrosMapper.CreateDtoFromDto(dto));
             }
             _endpointRepo.IncluirParametro(ObtenerEndpointPorId(id), param);
             return EndpointMapper.FromEntity(ObtenerEndpointPorId(id));

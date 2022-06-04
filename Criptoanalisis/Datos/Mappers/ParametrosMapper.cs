@@ -28,5 +28,12 @@ namespace Datos.Mappers
             Tipo = dto.Tipo,
             Valor = dto.Valor
         };
+
+        public static ParametroCreateDto CreateDtoFromDto(ParametroDto dto) => new()
+        {
+            Mapea = dto.Mapea,
+            Tipo = dto.Tipo,
+            Valor = dto.Valor
+        };
     }
 }
