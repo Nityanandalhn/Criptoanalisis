@@ -3,6 +3,7 @@ using Datos.Base;
 using Datos.Repositorios;
 using Datos.Servicios;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq.Expressions;
 
 namespace Criptoanalisis.Controllers
 {

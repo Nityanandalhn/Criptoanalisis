@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 
 namespace Datos.Base
 {
+    //WIP - Generificando repositorio
     public class RepoBaseImpl<Entidad,Contexto> : IRepoBase<Entidad, Contexto> where Entidad : class where Contexto : DbContext, new()
     {
         /// <summary>

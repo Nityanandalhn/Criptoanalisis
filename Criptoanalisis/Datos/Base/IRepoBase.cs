@@ -3,6 +3,7 @@ using System.Linq.Expressions;
 
 namespace Datos.Base
 {
+    //WIP - Generificando repositorio
     public interface IRepoBase<Entidad,Contexto> : IDisposable where Entidad : class where Contexto : class
     {
         /// <summary>
