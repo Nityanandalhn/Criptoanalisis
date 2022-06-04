@@ -1,10 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Datos.Relaciones;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Datos.Entidades
 {
     [Table("endpoint")]
-    public class Endpoint
+    public class Endpoints
     {
         [Required]
         [Column("url")]
@@ -15,6 +16,6 @@ namespace Datos.Entidades
         [Key]
         [Column("id")]
         public int Id { get; set; }
-        public virtual ICollection<Relaciones.ParametrosEndpoint>? ParametrosEndpoints { get; set; }
+        public virtual ICollection<ParametrosEndpoint>? ParametrosEndpoints { get; set; }
     }
 }

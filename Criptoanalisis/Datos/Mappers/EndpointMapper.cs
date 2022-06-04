@@ -1,25 +1,28 @@
 ﻿using Datos.Dtos;
+using Datos.Entidades;
 
 namespace Datos.Mappers
 {
     public class EndpointMapper
     {
-        public static EndpointDto FromEntity(Entidades.Endpoint endpoint) => new ()
+        public static EndpointDto FromEntity(Endpoints endpoint) => new ()
         {
             Id = endpoint.Id,
             Tipo = endpoint.Tipo,
             Url = endpoint.Url,
-            Parametros = endpoint.ParametrosEndpoints!.Select(x => x.Parametros!.Salida).Concat(endpoint.ParametrosEndpoints!.Select(x => x.Parametros!.Entrada)).ToList()!
+            Parametros = endpoint.ParametrosEndpoints!.Select(x => x.Parametros!.Salida)
+                 .Concat(endpoint.ParametrosEndpoints!.Select(x => x.Parametros!.Entrada))
+                 .ToList()!
         };
 
-        public static Entidades.Endpoint FromDto(EndpointDto dto) => new()
+        public static Endpoints FromDto(EndpointDto dto) => new()
         {
             Url = dto.Url,
             Tipo = dto.Tipo,
             Id = dto.Id
         };
 
-        public static Entidades.Endpoint FromCreateDto(EndpointCreateDto dto) => new()
+        public static Endpoints FromCreateDto(EndpointCreateDto dto) => new()
         {
             Url = dto.Url,
             Tipo = dto.Tipo

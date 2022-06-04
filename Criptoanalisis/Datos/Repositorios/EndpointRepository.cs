@@ -1,36 +1,37 @@
 ﻿using Datos.Base;
+using Datos.Entidades;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Linq.Expressions;
 
 namespace Datos.Repositorios
 {
-    public class EndpointRepository : IRepoBase<Entidades.Endpoint, CriptoAnalisisContext>
+    public class EndpointRepository : IRepoBase<Endpoints, CriptoAnalisisContext>
     {
         protected CriptoAnalisisContext DbContext { get; set; }
         public EndpointRepository() => DbContext = new();
 
-        public Entidades.Endpoint Create(Entidades.Endpoint endpoint) => 
+        public Endpoints Create(Endpoints endpoint) => 
             Persist(() => DbContext.Endpoints!.Add(endpoint));
 
-        public Entidades.Endpoint Delete(Entidades.Endpoint endpoint) => 
+        public Endpoints Delete(Endpoints endpoint) => 
             Persist(() => DbContext.Endpoints!.Remove(endpoint));
 
-        public IQueryable<Entidades.Endpoint> Get() => 
+        public IQueryable<Endpoints> Get() => 
             DbContext.Endpoints!.Include(e => e.ParametrosEndpoints)!.ThenInclude(pe => pe.Parametros);
 
-        public Entidades.Endpoint GetAtPos(int pos)
+        public Endpoints GetAtPos(int pos)
         {
             throw new NotImplementedException();
         }
 
-        public IQueryable<Entidades.Endpoint> GetBy(Expression<Func<Entidades.Endpoint, bool>> predicado) => 
+        public IQueryable<Endpoints> GetBy(Expression<Func<Endpoints, bool>> predicado) => 
             DbContext.Endpoints!.Where(predicado).Include(e => e.ParametrosEndpoints)!.ThenInclude(pe => pe.Parametros);
 
-        public Entidades.Endpoint Update(Entidades.Endpoint endpoint) => 
+        public Endpoints Update(Endpoints endpoint) => 
             Persist(() => DbContext.Endpoints!.Update(endpoint));
 
-        protected virtual Entidades.Endpoint Persist(Func<EntityEntry<Entidades.Endpoint>> act)
+        protected virtual Endpoints Persist(Func<EntityEntry<Endpoints>> act)
         {
             var res = act.Invoke();
             DbContext.SaveChanges();

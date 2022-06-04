@@ -14,21 +14,21 @@ namespace Datos.Servicios
         public List<EndpointDto> GetAllEndpointsWithParameterInfo() => 
             _endpointRepo.Get().Select(x => EndpointMapper.FromEntity(x)).ToList();
 
-        public List<Entidades.Endpoint> GetBy(Expression<Func<Entidades.Endpoint, bool>> predicado) => 
+        public List<Entidades.Endpoints> GetBy(Expression<Func<Entidades.Endpoints, bool>> predicado) => 
             _endpointRepo.GetBy(predicado).ToList();
 
-        public Entidades.Endpoint Create(EndpointCreateDto dto) =>
+        public Entidades.Endpoints Create(EndpointCreateDto dto) =>
             _endpointRepo.Create(EndpointMapper.FromCreateDto(dto));
 
-        public Entidades.Endpoint Update(EndpointCreateDto dto, int id)
+        public Entidades.Endpoints Update(EndpointCreateDto dto, int id)
         {
-            Entidades.Endpoint edp = _endpointRepo.GetBy(x => x.Id == id).ToList()[0];
-            edp.Url = dto.Url;
-            edp.Tipo = dto.Tipo;
+            Entidades.Endpoints edp = _endpointRepo.GetBy(x => x.Id == id).ToList()[0];
+            edp.Url = dto.Url ?? edp.Url;
+            edp.Tipo = dto.Tipo ?? edp.Tipo;
             return _endpointRepo.Update(edp);
         }
 
-        public Entidades.Endpoint Delete(EndpointDto dto) =>
+        public Entidades.Endpoints Delete(EndpointDto dto) =>
             _endpointRepo.Delete(EndpointMapper.FromDto(dto));
     }
 }
