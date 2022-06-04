@@ -17,8 +17,16 @@ namespace Datos.Servicios
         public List<Entidades.Endpoint> GetBy(Expression<Func<Entidades.Endpoint, bool>> predicado) => 
             _endpointRepo.GetBy(predicado).ToList();
 
-        public Entidades.Endpoint Update(EndpointDto dto) => 
-            _endpointRepo.Update(EndpointMapper.FromDto(dto));
+        public Entidades.Endpoint Create(EndpointCreateDto dto) =>
+            _endpointRepo.Create(EndpointMapper.FromCreateDto(dto));
+
+        public Entidades.Endpoint Update(EndpointCreateDto dto, int id)
+        {
+            Entidades.Endpoint edp = _endpointRepo.GetBy(x => x.Id == id).ToList()[0];
+            edp.Url = dto.Url;
+            edp.Tipo = dto.Tipo;
+            return _endpointRepo.Update(edp);
+        }
 
         public Entidades.Endpoint Delete(EndpointDto dto) =>
             _endpointRepo.Delete(EndpointMapper.FromDto(dto));

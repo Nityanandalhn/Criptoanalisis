@@ -16,7 +16,7 @@ namespace Datos
         //https://goessner.net/articles/JsonPath/
         public static List<JToken> BuscarPropiedad(string jsonString, string prop) => JToken.Parse(jsonString).SelectTokens($"$..[?(@.{prop})]").ToList();
         public static List<string?> ExtraerListadoDeValoresDePropiedad(string jsonString, string prop) => BuscarPropiedad(jsonString, prop).Select(x => x[prop]?.ToString()).ToList();
-       // public static List<T> ExtraerPropiedad<T>(string jsonString, string prop) where T : new() => ExtraerPropiedad(jsonString, prop).Select<JToken,T>(x => (T)x[prop]);
+        // public static List<T> ExtraerPropiedad<T>(string jsonString, string prop) where T : new() => ExtraerPropiedad(jsonString, prop).Select<JToken,T>(x => (T)x[prop]);
         /*public static string? ReadUrl(string url)
         {
             try

@@ -18,5 +18,11 @@ namespace Datos.Mappers
             Tipo = dto.Tipo,
             Id = dto.Id
         };
+
+        public static Entidades.Endpoint FromCreateDto(EndpointCreateDto dto) => new()
+        {
+            Url = dto.Url,
+            Tipo = dto.Tipo
+        };
     }
 }
