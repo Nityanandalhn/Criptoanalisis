@@ -6,8 +6,8 @@ namespace Datos.Repositorios
 {
     public class EndpointRepository : IRepoBase<Entidades.Endpoint, CriptoAnalisisContext>
     {
-        protected CriptoAnalisisContext RepoContext { get; set; }
-        public EndpointRepository() => RepoContext = new();
+        protected CriptoAnalisisContext DbContext { get; set; }
+        public EndpointRepository() => DbContext = new();
         public Entidades.Endpoint Create(Entidades.Endpoint t)
         {
             throw new NotImplementedException();
@@ -20,14 +20,11 @@ namespace Datos.Repositorios
 
         public void Dispose()
         {
-            RepoContext.Dispose();
+            DbContext.Dispose();
             GC.SuppressFinalize(this);
         }
 
-        public IQueryable<Entidades.Endpoint> Get()
-        {
-            return RepoContext.Endpoints.Include(e => e.ParametrosEndpoints)!.ThenInclude(pe => pe.Parametros);
-        }
+        public IQueryable<Entidades.Endpoint> Get() => DbContext.Endpoints!.Include(e => e.ParametrosEndpoints)!.ThenInclude(pe => pe.Parametros);
 
         public Entidades.Endpoint GetAtPos(int pos)
         {

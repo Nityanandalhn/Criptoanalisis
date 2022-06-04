@@ -18,10 +18,10 @@ namespace Criptoanalisis.Controllers
             _service = service;
         }
 
-        [HttpGet("Por id")]
+        [HttpGet("Endpoints")]
         public IActionResult Get()
         {
-            try { return Ok(_service.GetAllEndpoints()); } catch { return NotFound(); }
+            try { return Ok(_service.GetAllEndpointsWithParameterInfo()); } catch { return NotFound(); }
         }
     }
 }
