@@ -1,4 +1,4 @@
-﻿using Datos;
+﻿/*using Datos;
 using Datos.Base;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,4 +19,4 @@ namespace Criptoanalisis.Controllers
             try { return Ok(_repo.GetBy(x => x.Metodo == Metodos.GET)); } catch { return NotFound(); }
         }
     }
-}
+}*/

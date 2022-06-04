@@ -1,5 +1,6 @@
 ﻿using Datos.Base;
 using Datos.Entidades;
+using Datos.Relaciones;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Linq.Expressions;
@@ -42,6 +43,19 @@ namespace Datos.Repositorios
         {
             DbContext.Dispose();
             GC.SuppressFinalize(this);
+        }
+        public void GuardarCambios() => DbContext.SaveChanges();
+        public Endpoints IncluirParametro(Endpoints edp, Parametros parametro)
+        {
+            edp.ParametrosEndpoints!.Add(new ParametrosEndpoint()
+            {
+                EndpointId = edp.Id,
+                ParametroId = parametro.Id,
+                Endpoints = edp,
+                Parametros = parametro
+            });
+            DbContext.SaveChanges();
+            return edp;
         }
     }
 }

@@ -4,6 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Datos.Relaciones
 {
+    //Modelo M-M que permite incluir propiedades de relación
+    //Encontré esta opción antes del modelo M-M 'simple'
+    //https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key
     [Table("endpoint_parametros")]
     public class ParametrosEndpoint
     {
