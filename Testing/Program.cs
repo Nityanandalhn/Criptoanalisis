@@ -36,7 +36,7 @@ Dictionary<string, string> para = new() {
     { "Alto", "high" },
     { "Puja", "bid" },
     { "Ultimo", "last" },
-    { "Fecha", "open"}
+    { "Abierto", "open"}
 };
 
 string url = "https://www.mexc.com/open/api/v2/market/ticker";
