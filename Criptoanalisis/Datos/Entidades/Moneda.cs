@@ -28,6 +28,8 @@ namespace Datos.Entidades
         public double Alto { get; set; }
         [Column("bajo")]
         public double Bajo { get; set; }
+        [Column("reciente")]
+        public double Reciente { get; set; }
 
         public ICollection<Endpoints>? Endpoints { get; set; }
     }
