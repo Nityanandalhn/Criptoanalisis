@@ -41,6 +41,13 @@ namespace Criptoanalisis.Controllers
             catch { return NotFound(); }
         }
 
+        [HttpGet("Usuarios")]
+        public IActionResult GetUsuarios()
+        {
+            try { return Ok(_service.GetAllUsuariosWithIntercambioInfo()); }
+            catch { return NotFound(); }
+        }
+
         [HttpPost("NuevoEndpoint")]
         public IActionResult PostEndpoint([FromBody] EndpointCreateDto dto)
         {

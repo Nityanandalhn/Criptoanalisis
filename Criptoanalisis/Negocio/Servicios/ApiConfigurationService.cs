@@ -13,13 +13,19 @@ namespace Negocio.Servicios
         protected readonly IEndpointsRepository _endpointRepo;
         protected readonly IParametroRepository _parametrosRepo;
         protected readonly IIntercambioRepository _monedasRepo;
+        protected readonly IUsuarioRepository _usuarioRepo;
 
-        public ApiConfigurationService(ILogger<ApiConfigurationService> logger, EndpointsRepository endpointRepo, ParametrosRepository parametrosRepo, IntercambioRepository monedasRepo)
+        public ApiConfigurationService(ILogger<ApiConfigurationService> logger, 
+            EndpointsRepository endpointRepo,
+            ParametrosRepository parametrosRepo,
+            IntercambioRepository monedasRepo,
+            UsuarioRepository usuarioRepo)
         {
             _logger = logger;
             _endpointRepo = endpointRepo;
             _parametrosRepo = parametrosRepo;
             _monedasRepo = monedasRepo;
+            _usuarioRepo = usuarioRepo;
         }
 
         public IEnumerable<EndpointDto> GetAllEndpointsWithParameterInfo()
@@ -34,6 +40,9 @@ namespace Negocio.Servicios
         public List<IntercambioDto> GetAllIntercambiosWithEndpointInfo() =>
             _monedasRepo.Get().Select(x => IntercambioMapper.FromEntity(x)).ToList();
 
+        public List<Usuario> GetAllUsuariosWithIntercambioInfo() =>
+            _usuarioRepo.Get().ToList();
+
         public List<Endpoints> GetEndpointBy(Expression<Func<Endpoints, bool>> predicado) => 
             _endpointRepo.GetBy(predicado).ToList();
 
@@ -45,7 +54,7 @@ namespace Negocio.Servicios
 
         public Endpoints UpdateEndpoint(EndpointCreateDto dto, int id)
         {
-            Endpoints edp = ObtenerEndpointPorId(id);
+            Endpoints edp = BuscarEndpointPorId(id);
             edp.Url = dto.Url ?? edp.Url;
             edp.Tipo = dto.Tipo ?? edp.Tipo;
             return _endpointRepo.Update(edp);
@@ -59,20 +68,25 @@ namespace Negocio.Servicios
             Parametro param;
             try
             {
-                param = ObtenerParametroPorId(dto.Id);
+                param = BuscarParametroPorId(dto.Id);
             } 
             catch
             {
                 param = CreateParametro(ParametroMapper.CreateDtoFromDto(dto));
             }
-            _endpointRepo.IncluirParametro(ObtenerEndpointPorId(id), param);
-            return EndpointMapper.FromEntity(ObtenerEndpointPorId(id));
+            _endpointRepo.IncluirParametro(BuscarEndpointPorId(id), param);
+            return EndpointMapper.FromEntity(BuscarEndpointPorId(id));
         }
 
-        private Endpoints ObtenerEndpointPorId(int id) 
+        public Endpoints BuscarEndpointPorId(int id) 
             => _endpointRepo.GetBy(x => x.Id == id).ToList()[0];
 
-        private Parametro ObtenerParametroPorId(int id)
+        public Parametro BuscarParametroPorId(int id)
             => _parametrosRepo.GetBy(x => x.Id == id).ToList()[0];
+
+        public void ExtraerConfiguracionCompleta()
+        {
+
+        }
     }
 }

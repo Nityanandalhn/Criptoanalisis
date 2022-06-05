@@ -32,5 +32,7 @@ namespace Datos.Entidades
         public double Reciente { get; set; }
 
         public Endpoints? Endpoint { get; set; }
+
+        public ICollection<Usuario>? Usuarios { get; set; }
     }
 }

@@ -50,5 +50,10 @@ namespace Datos.Abstract.Interfaces
         /// <exception cref="DbUpdateException"></exception>
         /// <exception cref="DbUpdateConcurrencyException"></exception>
         Entidad Delete(Entidad t);
+
+        /// <summary>
+        /// Método que persiste todos los cambios realizados sobre el contexto.
+        /// </summary>
+        void GuardarCambios();
     }
 }
