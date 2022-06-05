@@ -29,8 +29,10 @@ namespace Datos.Repositorios
         public IQueryable<Endpoints> GetBy(Expression<Func<Endpoints, bool>> predicado) => 
             DbContext.Endpoints!.Where(predicado).Include(e => e.ParametrosEndpoints)!.ThenInclude(pe => pe.Parametros);
 
-        public Endpoints Update(Endpoints endpoint) => 
-            Persist(() => DbContext.Endpoints!.Update(endpoint));
+        public Endpoints Update(Endpoints endpoint)
+        {
+            return Persist(() => DbContext.Endpoints!.Update(endpoint));
+        }
 
         protected virtual Endpoints Persist(Func<EntityEntry<Endpoints>> act)
         {
@@ -55,6 +57,8 @@ namespace Datos.Repositorios
             DbContext.SaveChanges();
         }
 
-        public IQueryable<Endpoints> GetEndpointWithActiveUserInfo() => DbContext.Endpoints!.Include(e => e.UsuariosActivos);
+        public IQueryable<Endpoints> GetAllEndpointInfo() => 
+            DbContext.Endpoints!.Include(e => e.Intercambios).Include(e => e.UsuariosActivos)!.ThenInclude(u => u.MonedasActivas)
+                .Include(e => e.ParametrosEndpoints)!.ThenInclude(pe => pe.Parametros);
     }
 }

@@ -5,8 +5,8 @@
     /// </summary>
     public class MetaDatosJson : Attribute
     {
-        public string Clave { get; }
+        public string ClaveDeFiltrado { get; }
 
-        public MetaDatosJson(string clave) => Clave = clave;
+        public MetaDatosJson(string claveDeFiltrado) => ClaveDeFiltrado = claveDeFiltrado;
     }
 }

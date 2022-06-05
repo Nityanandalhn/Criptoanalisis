@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Datos.Entidades
 {
     [Table("intercambio")]
+    [MetaDatosJson("Nombre")]
     public class Intercambio
     {
         [Key]

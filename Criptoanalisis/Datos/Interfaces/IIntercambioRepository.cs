@@ -5,5 +5,6 @@ namespace Datos.Interfaces
 {
     public interface IIntercambioRepository : IRepoBase<Intercambio>
     {
+        public Intercambio CrearDesdeProceso(Intercambio intercambio);
     }
 }

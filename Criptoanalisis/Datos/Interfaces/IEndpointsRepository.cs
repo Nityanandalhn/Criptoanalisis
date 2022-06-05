@@ -7,6 +7,6 @@ namespace Datos.Interfaces
     {
         public void IncluirParametro(Endpoints edp, Parametro parametro);
 
-        public IQueryable<Endpoints> GetEndpointWithActiveUserInfo();
+        public IQueryable<Endpoints> GetAllEndpointInfo();
     }
 }

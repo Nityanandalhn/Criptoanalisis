@@ -44,5 +44,10 @@ namespace Datos.Repositorios
             GC.SuppressFinalize(this);
         }
         public void GuardarCambios() => DbContext.SaveChanges();
+
+        public Intercambio CrearDesdeProceso(Intercambio intercambio)
+        {
+            return Persist(() => DbContext.Intercambios!.Attach(intercambio));
+        }
     }
 }

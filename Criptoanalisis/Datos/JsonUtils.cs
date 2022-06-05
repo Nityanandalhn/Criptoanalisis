@@ -117,8 +117,8 @@ namespace Datos
                 try
                 {
                     //Primer filtrado, devuelvo un listado de JToken que contenga cualquier string con el filtro indicado por mi atributo
-                    List<JToken> lista = BuscarPropiedad(respuesta, parametros[attr.Clave])
-                        .Where(x => x[parametros[attr.Clave]]!.ToString().Contains(filtro))
+                    List<JToken> lista = BuscarPropiedad(respuesta, parametros[attr.ClaveDeFiltrado])
+                        .Where(x => x[parametros[attr.ClaveDeFiltrado]]!.ToString().Contains(filtro))
                         .ToList();
 
                     //Recorro el listado devuelto por el filtrado principal
@@ -126,7 +126,7 @@ namespace Datos
                     {
                         //Filtro las propiedades de la clase encontradas en el mapa de filtros y en las propiedades JToken
                         List<PropertyInfo> propiedades = typeof(T).GetProperties().ToList()
-                            .Where(propiedad => parametros.ContainsKey(propiedad.Name) && jTokenPropiedades[parametros[attr.Clave]]!.ToString().Equals(filtro))
+                            .Where(propiedad => parametros.ContainsKey(propiedad.Name) && jTokenPropiedades[parametros[attr.ClaveDeFiltrado]]!.ToString().Equals(filtro))
                             .ToList();
 
                         if (propiedades.Count > 0)

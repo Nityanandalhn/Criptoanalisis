@@ -77,5 +77,12 @@ namespace Criptoanalisis.Controllers
             catch (ArgumentOutOfRangeException) { return NotFound(); }
             catch { return BadRequest(); }
         }
+
+        [HttpPost("NuevoIntercambio")]
+        public IActionResult PostIntercambio([FromBody] IntercambioCreateDto dto)
+        {
+            try { return Created(nameof(GetEndpoint), _service.CreateIntercambio(dto)); }
+            catch { return BadRequest(); }
+        }
     }
 }
