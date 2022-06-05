@@ -2,11 +2,11 @@
 
 namespace Negocio.Background
 {
-    public class ObtencionDatosApis : BackgroundService
+    public class ObtencionDatosApisScheduledJob : BackgroundService
     {
-        private readonly ILogger<ObtencionDatosApis> _logger;
+        private readonly ILogger<ObtencionDatosApisScheduledJob> _logger;
         private readonly ApiConfigurationService _service;
-        public ObtencionDatosApis(ILogger<ObtencionDatosApis> logger, IServiceScopeFactory factory)
+        public ObtencionDatosApisScheduledJob(ILogger<ObtencionDatosApisScheduledJob> logger, IServiceScopeFactory factory)
         {
             _logger = logger;
             _service = factory.CreateScope().ServiceProvider.GetRequiredService<ApiConfigurationService>();
@@ -21,12 +21,11 @@ namespace Negocio.Background
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                _logger.LogInformation($"Consultado APIs");
-                _logger.LogDebug("DEBUG");
+                _logger.LogInformation($"{DateTimeOffset.Now} Leyendo configuración desde la DB.");
 
                 _service.GetAllEndpointsWithParameterInfo().ToList().ForEach(x => _logger.LogInformation(x.Url));
 
-                await Task.Delay(1000, stoppingToken);
+                await Task.Delay(60000, stoppingToken);
             }
 
             _logger.LogInformation($"Proceso de obtención de datos completado.");

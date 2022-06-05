@@ -17,7 +17,7 @@ builder.Services.AddScoped<ApiConfigurationService>();
 //Aunque al final voy a tratar la entrada/salida de datos con dtos, dejo activa la propiedad que evita entrar en bucle a la hora de serializar un objeto.
 builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles);
 
-builder.Services.AddHostedService<ObtencionDatosApis>();
+builder.Services.AddHostedService<ObtencionDatosApisScheduledJob>();
 
 var app = builder.Build();
 
