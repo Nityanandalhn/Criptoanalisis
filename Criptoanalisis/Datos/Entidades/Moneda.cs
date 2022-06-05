@@ -1,0 +1,34 @@
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Datos.Entidades
+{
+    [Table("moneda")]
+    public class Moneda
+    {
+        [Key]
+        [Column("id")]
+        public int Id { get; set; }
+        [Required]
+        [Column("nombre")]
+        public string? Nombre{ get; set; }
+        [Required]
+        [Column("fecha")]
+        public DateTimeOffset Fecha { get; set; }
+        [Required]
+        [Column("exchange")]
+        public string? Exchange { get; set; }
+        [Column("volumen")]
+        public double Volumen { get; set; }
+        [Column("abierto")]
+        public double Abierto { get; set; }
+        [Column("cerrado")]
+        public double Cerrado { get; set; }
+        [Column("alto")]
+        public double Alto { get; set; }
+        [Column("bajo")]
+        public double Bajo { get; set; }
+
+        public ICollection<Endpoints>? Endpoints { get; set; }
+    }
+}

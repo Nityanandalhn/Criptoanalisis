@@ -11,6 +11,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped(typeof(IRepoBase<,>), typeof(RepoBaseImpl<,>));
 builder.Services.AddScoped<EndpointRepository>();
 builder.Services.AddScoped<ParametrosRepository>();
+builder.Services.AddScoped<MonedaRepository>();
 builder.Services.AddScoped<ApiConfigurationService>();
 //Aunque al final voy a tratar la entrada/salida de datos con dtos, dejo activa la propiedad que evita entrar en bucle a la hora de serializar un objeto.
 builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles);

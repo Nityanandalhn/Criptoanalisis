@@ -11,10 +11,13 @@ namespace Datos.Servicios
     {
         protected readonly EndpointRepository _endpointRepo;
         protected readonly ParametrosRepository _parametrosRepo;
-        public ApiConfigurationService(EndpointRepository endpointRepo, ParametrosRepository parametrosRepo)
+        protected readonly MonedaRepository _monedasRepo;
+
+        public ApiConfigurationService(EndpointRepository endpointRepo, ParametrosRepository parametrosRepo, MonedaRepository monedasRepo)
         {
             _endpointRepo = endpointRepo;
             _parametrosRepo = parametrosRepo;
+            _monedasRepo = monedasRepo;
         }
 
         public IEnumerable<EndpointDto> GetAllEndpointsWithParameterInfo() => 
@@ -22,6 +25,9 @@ namespace Datos.Servicios
 
         public List<ParametroDto> GetAllParametersWithEndpointInfo() =>
             _parametrosRepo.Get().Select(x => ParametrosMapper.FromEntity(x)).ToList();
+
+        public List<Moneda> GetAllMonedasWithEndpointInfo() =>
+            _monedasRepo.Get().ToList();
 
         public List<Endpoints> GetEndpointBy(Expression<Func<Endpoints, bool>> predicado) => 
             _endpointRepo.GetBy(predicado).ToList();

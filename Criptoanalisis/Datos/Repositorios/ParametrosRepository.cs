@@ -29,8 +29,8 @@ namespace Datos.Repositorios
         public IQueryable<Parametros> GetBy(Expression<Func<Parametros, bool>> predicado) => 
             DbContext.Parametros!.Where(predicado).Include(e => e.ParametrosEndpoints)!.ThenInclude(pe => pe.Endpoints);
 
-        public Parametros Update(Parametros endpoint) => 
-            Persist(() => DbContext.Parametros!.Update(endpoint));
+        public Parametros Update(Parametros parametro) => 
+            Persist(() => DbContext.Parametros!.Update(parametro));
 
         protected virtual Parametros Persist(Func<EntityEntry<Parametros>> act)
         {
