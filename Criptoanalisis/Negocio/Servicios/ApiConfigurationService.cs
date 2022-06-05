@@ -31,8 +31,8 @@ namespace Negocio.Servicios
         public List<ParametroDto> GetAllParametersWithEndpointInfo() =>
             _parametrosRepo.Get().Select(x => ParametroMapper.FromEntity(x)).ToList();
 
-        public List<Intercambio> GetAllMonedasWithEndpointInfo() =>
-            _monedasRepo.Get().ToList();
+        public List<IntercambioDto> GetAllIntercambiosWithEndpointInfo() =>
+            _monedasRepo.Get().Select(x => IntercambioMapper.FromEntity(x)).ToList();
 
         public List<Endpoints> GetEndpointBy(Expression<Func<Endpoints, bool>> predicado) => 
             _endpointRepo.GetBy(predicado).ToList();

@@ -34,10 +34,11 @@ namespace Criptoanalisis.Controllers
             catch { return NotFound(); }
         }
 
-        [HttpGet("Monedas")]
-        public IActionResult GetMoneda()
+        //Esto debería ser una 1:M - WIP modificar modelo
+        [HttpGet("Intercambios")]
+        public IActionResult GetIntercambio()
         {
-            try { return Ok(_service.GetAllMonedasWithEndpointInfo()); }
+            try { return Ok(_service.GetAllIntercambiosWithEndpointInfo()); }
             catch { return NotFound(); }
         }
 
