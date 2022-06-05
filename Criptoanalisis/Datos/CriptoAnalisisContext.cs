@@ -45,6 +45,10 @@ namespace Datos
                 j => j.HasOne<Endpoints>().WithMany().HasForeignKey("cod_edp").HasConstraintName("fk_endpoint").OnDelete(DeleteBehavior.SetNull),
                 j => j.HasOne<Usuario>().WithMany().HasForeignKey("cod_usr").HasConstraintName("fk_usuario").OnDelete(DeleteBehavior.SetNull)
             );
+            builder.Entity<Usuario>().HasMany(m => m.MonedasActivas).WithMany(e => e.Usuarios).UsingEntity<Dictionary<string, object>>("usuario_moneda",
+                j => j.HasOne<Moneda>().WithMany().HasForeignKey("nom_mnd").HasConstraintName("fk_moneda").OnDelete(DeleteBehavior.SetNull),
+                j => j.HasOne<Usuario>().WithMany().HasForeignKey("cod_usr").HasConstraintName("fk_usuario").OnDelete(DeleteBehavior.SetNull)
+            );
             builder.Entity<ParametroEndpoint>().HasKey(pe => new { pe.ParametroId, pe.EndpointId });
             builder.Entity<ParametroEndpoint>().HasOne(pe => pe.Endpoints).WithMany(e => e.ParametrosEndpoints).HasForeignKey(pe => pe.EndpointId);
             builder.Entity<ParametroEndpoint>().HasOne(pe => pe.Parametros).WithMany(p => p.ParametrosEndpoints).HasForeignKey(pe => pe.ParametroId);

@@ -18,7 +18,7 @@ namespace Datos.Repositorios
             Persist(() => DbContext.Monedas!.Remove(usuario));
 
         public IQueryable<Moneda> Get() => 
-            DbContext.Monedas!;
+            DbContext.Monedas!.Include(e => e.Usuarios);
 
         public Moneda GetAtPos(int pos)
         {

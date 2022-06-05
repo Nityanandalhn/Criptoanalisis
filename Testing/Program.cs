@@ -21,9 +21,9 @@ IncluirPropiedad(o, "r", new ExpandoObject());
 IncluirPropiedad(((IDictionary<string, object>)o)["r"], "t", new ExpandoObject());
 IncluirPropiedad(o.r.t, "T", "t?");
 string jsonString = JsonConvert.SerializeObject(o);
-//Console.WriteLine(jsonString);
+Console.WriteLine(jsonString);
 List<JToken> list = JsonUtils.BuscarPropiedad(jsonString, "pruebas");
-//Console.WriteLine(list![0]["pruebas"]![0]);
+Console.WriteLine(list![0]["pruebas"]![0]);
 
 
 List<string> parametros = new() { "symbol", "volume", "high", "low", "bid", "ask", "open", "last" };
@@ -55,9 +55,9 @@ para = new()
 };
 monedas = new() { "ETH" };
 
-//Console.WriteLine("\nRealizando llamada a CRYPTOCOMPARE\n");
-//test = ConsultarApi<Modelo>(url, para, monedas);
-//test.ForEach(x => Console.WriteLine(x));
+Console.WriteLine("\nRealizando llamada a CRYPTOCOMPARE\n");
+test = ConsultarApi<Modelo>(url, para, monedas);
+test.ForEach(x => Console.WriteLine(x));
 
 List<T> ConsultarApi<T>(string url, Dictionary<string,string> parametros, List<string> filtros) where T: new()
 {

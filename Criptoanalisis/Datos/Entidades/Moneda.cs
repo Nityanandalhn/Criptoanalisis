@@ -9,5 +9,6 @@ namespace Datos.Entidades
         [Key]
         [Column("nombre")]
         public string? Nombre { get; set; }
+        public ICollection<Usuario>? Usuarios { get; set; }
     }
 }

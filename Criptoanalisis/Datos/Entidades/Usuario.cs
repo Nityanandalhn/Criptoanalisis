@@ -19,5 +19,6 @@ namespace Datos.Entidades
         public int Id { get; set; }
         public ICollection<Intercambio>? Intercambios { get; set; }
         public ICollection<Endpoints>? EndpointsActivos { get; set; }
+        public ICollection<Moneda>? MonedasActivas { get; set; }
     }
 }
