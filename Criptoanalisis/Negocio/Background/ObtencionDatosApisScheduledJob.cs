@@ -6,6 +6,8 @@ namespace Negocio.Background
     {
         private readonly ILogger<ObtencionDatosApisScheduledJob> _logger;
         private readonly ApiConfigurationService _service;
+
+        private static string FechaCompleta { get => $"{DateTimeOffset.Now:O}"; }
         public ObtencionDatosApisScheduledJob(ILogger<ObtencionDatosApisScheduledJob> logger, IServiceScopeFactory factory)
         {
             _logger = logger;
@@ -14,21 +16,21 @@ namespace Negocio.Background
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation("{} Iniciando proceso de obtención de datos de cripto.", $"{DateTimeOffset.Now:O}");
+            _logger.LogInformation("{} Iniciando proceso de obtención de datos de cripto.", FechaCompleta);
 
             stoppingToken.Register(() =>
-                _logger.LogCritical("{} Se ha detenido el proceso de obtención de datos de cripto.", $"{DateTimeOffset.Now:O}"));
+                _logger.LogCritical("{} Se ha detenido el proceso de obtención de datos de cripto.", FechaCompleta));
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                _logger.LogInformation("{} Leyendo configuración desde la DB.", $"{DateTimeOffset.Now:O}");
+                _logger.LogInformation("{} Leyendo configuración desde la DB.", FechaCompleta);
 
-                _service.GetAllEndpointsWithParameterInfo().ToList().ForEach(x => _logger.LogInformation("{} {}", $"{DateTimeOffset.Now:O}", x.Url));
+                _service.GetAllEndpointsWithParameterInfo().ToList().ForEach(x => _logger.LogInformation("{} {}", FechaCompleta, x.Url));
 
                 await Task.Delay(60000, stoppingToken);
             }
 
-            _logger.LogInformation("{} Proceso de obtención de datos de cripto terminado.", $"{DateTimeOffset.Now:O}");
+            _logger.LogInformation("{} Proceso de obtención de datos de cripto terminado.", FechaCompleta);
         }
     }
 }

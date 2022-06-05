@@ -1,4 +1,4 @@
-﻿namespace Negocio.Background.Base
+﻿namespace Negocio.Background.Abstract
 {
     //https://docs.microsoft.com/en-us/dotnet/architecture/microservices/multi-container-microservice-net-applications/background-tasks-with-ihostedservice
     // Copyright (c) .NET Foundation. Licensed under the Apache License, Version 2.0.

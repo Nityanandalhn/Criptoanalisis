@@ -1,8 +1,6 @@
-using Negocio.Background;
 using Datos.Repositorios;
+using Negocio.Background;
 using Negocio.Servicios;
-using Datos.Abstract.Implementaciones;
-using Datos.Abstract.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
