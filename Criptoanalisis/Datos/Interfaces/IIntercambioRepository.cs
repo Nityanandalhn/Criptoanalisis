@@ -3,7 +3,7 @@ using Datos.Entidades;
 
 namespace Datos.Interfaces
 {
-    public interface IParametrosRepository : IRepoBase<Parametros>
+    public interface IIntercambioRepository : IRepoBase<Intercambio>
     {
     }
 }

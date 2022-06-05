@@ -45,9 +45,9 @@ namespace Datos.Repositorios
             GC.SuppressFinalize(this);
         }
         public void GuardarCambios() => DbContext.SaveChanges();
-        public void IncluirParametro(Endpoints edp, Parametros parametro)
+        public void IncluirParametro(Endpoints edp, Parametro parametro)
         {
-            DbContext.ParametrosEndpoints!.Add(new ParametrosEndpoint()
+            DbContext.ParametrosEndpoints!.Add(new ParametroEndpoint()
             {
                 EndpointId = edp.Id,
                 ParametroId = parametro.Id

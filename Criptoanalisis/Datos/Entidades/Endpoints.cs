@@ -16,8 +16,8 @@ namespace Datos.Entidades
         [Key]
         [Column("id")]
         public int Id { get; set; }
-        public virtual ICollection<ParametrosEndpoint>? ParametrosEndpoints { get; set; }
-        public ICollection<Moneda>? Monedas { get; set; }
+        public virtual ICollection<ParametroEndpoint>? ParametrosEndpoints { get; set; }
+        public ICollection<Intercambio>? Monedas { get; set; }
 
     }
 }

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Datos.Entidades
 {
     [Table("parametros")]
-    public class Parametros
+    public class Parametro
     {
         [Required]
         [Column("valor")]
@@ -18,6 +18,6 @@ namespace Datos.Entidades
         [Key]
         [Column("id")]
         public int Id { get; set; }
-        public virtual ICollection<Relaciones.ParametrosEndpoint>? ParametrosEndpoints { get; set; }
+        public virtual ICollection<Relaciones.ParametroEndpoint>? ParametrosEndpoints { get; set; }
     }
 }

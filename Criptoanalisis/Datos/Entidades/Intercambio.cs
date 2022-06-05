@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Datos.Entidades
 {
-    [Table("moneda")]
-    public class Moneda
+    [Table("intercambio")]
+    public class Intercambio
     {
         [Key]
         [Column("id")]

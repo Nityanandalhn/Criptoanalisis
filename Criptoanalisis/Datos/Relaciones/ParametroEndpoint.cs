@@ -8,7 +8,7 @@ namespace Datos.Relaciones
     //Encontré esta opción antes del modelo M-M 'simple'
     //https://docs.microsoft.com/en-us/ef/core/modeling/relationships?tabs=fluent-api%2Cfluent-api-simple-key%2Csimple-key
     [Table("endpoint_parametros")]
-    public class ParametrosEndpoint
+    public class ParametroEndpoint
     {
         [Required]
         [Column("cod_edp")]
@@ -17,6 +17,6 @@ namespace Datos.Relaciones
         [Column("cod_prm")]
         public int ParametroId { get; set; }
         public virtual Endpoints? Endpoints { get; set; }
-        public virtual Parametros? Parametros { get; set; }
+        public virtual Parametro? Parametros { get; set; }
     }
 }

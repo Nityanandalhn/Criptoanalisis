@@ -3,9 +3,9 @@ using Datos.Entidades;
 
 namespace Datos.Mappers
 {
-    public class ParametrosMapper
+    public class ParametroMapper
     {
-        public static ParametroDto FromEntity(Parametros parametro) => new ()
+        public static ParametroDto FromEntity(Parametro parametro) => new ()
         {
             Id = parametro.Id,
             Tipo = parametro.Tipo,
@@ -14,7 +14,7 @@ namespace Datos.Mappers
             Endpoints = parametro.ParametrosEndpoints!.Select(x => x.Endpoints!.Url).ToList()!
         };
 
-        public static Parametros FromDto(ParametroDto dto) => new()
+        public static Parametro FromDto(ParametroDto dto) => new()
         {
             Id = dto.Id,
             Mapea = dto.Mapea,
@@ -22,7 +22,7 @@ namespace Datos.Mappers
             Valor = dto.Valor
         };
 
-        public static Parametros FromCreateDto(ParametroCreateDto dto) => new()
+        public static Parametro FromCreateDto(ParametroCreateDto dto) => new()
         {
             Mapea = dto.Mapea,
             Tipo = dto.Tipo,

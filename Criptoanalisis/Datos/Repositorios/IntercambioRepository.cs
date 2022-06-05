@@ -6,32 +6,32 @@ using System.Linq.Expressions;
 
 namespace Datos.Repositorios
 {
-    public class MonedaRepository : IMonedaRepository
+    public class IntercambioRepository : IIntercambioRepository
     {
         protected CriptoAnalisisContext DbContext { get; set; }
-        public MonedaRepository() => DbContext = new();
+        public IntercambioRepository() => DbContext = new();
 
-        public Moneda Create(Moneda parametro) => 
+        public Intercambio Create(Intercambio parametro) => 
             Persist(() => DbContext.Monedas!.Add(parametro));
 
-        public Moneda Delete(Moneda parametro) => 
+        public Intercambio Delete(Intercambio parametro) => 
             Persist(() => DbContext.Monedas!.Remove(parametro));
 
-        public IQueryable<Moneda> Get() => 
+        public IQueryable<Intercambio> Get() => 
             DbContext.Monedas!.Include(e => e.Endpoints)!;
 
-        public Moneda GetAtPos(int pos)
+        public Intercambio GetAtPos(int pos)
         {
             throw new NotImplementedException();
         }
 
-        public IQueryable<Moneda> GetBy(Expression<Func<Moneda, bool>> predicado) => 
+        public IQueryable<Intercambio> GetBy(Expression<Func<Intercambio, bool>> predicado) => 
             DbContext.Monedas!.Where(predicado).Include(e => e.Endpoints)!;
 
-        public Moneda Update(Moneda moneda) => 
+        public Intercambio Update(Intercambio moneda) => 
             Persist(() => DbContext.Monedas!.Update(moneda));
 
-        protected virtual Moneda Persist(Func<EntityEntry<Moneda>> act)
+        protected virtual Intercambio Persist(Func<EntityEntry<Intercambio>> act)
         {
             var res = act.Invoke();
             DbContext.SaveChanges();
