@@ -14,18 +14,21 @@ namespace Negocio.Servicios
         protected readonly IParametroRepository _parametrosRepo;
         protected readonly IIntercambioRepository _monedasRepo;
         protected readonly IUsuarioRepository _usuarioRepo;
+        protected readonly IMonedaRepository _monedaRepo;
 
         public ApiConfigurationService(ILogger<ApiConfigurationService> logger, 
             EndpointsRepository endpointRepo,
             ParametrosRepository parametrosRepo,
             IntercambioRepository monedasRepo,
-            UsuarioRepository usuarioRepo)
+            UsuarioRepository usuarioRepo,
+            MonedaRepository monedaRepo)
         {
             _logger = logger;
             _endpointRepo = endpointRepo;
             _parametrosRepo = parametrosRepo;
             _monedasRepo = monedasRepo;
             _usuarioRepo = usuarioRepo;
+            _monedaRepo = monedaRepo;
         }
 
         public IEnumerable<EndpointDto> GetAllEndpointsWithParameterInfo()
@@ -42,6 +45,9 @@ namespace Negocio.Servicios
 
         public List<UsuarioDto> GetAllUsuariosWithIntercambioInfo() =>
             _usuarioRepo.Get().Select(x => UsuarioMapper.FromEntity(x)).ToList();
+
+        public List<Moneda> GetAllMonedas() =>
+            _monedaRepo.Get().ToList();
 
         public List<Endpoints> GetEndpointBy(Expression<Func<Endpoints, bool>> predicado) => 
             _endpointRepo.GetBy(predicado).ToList();

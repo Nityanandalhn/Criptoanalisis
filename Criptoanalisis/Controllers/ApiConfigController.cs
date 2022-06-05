@@ -47,6 +47,13 @@ namespace Criptoanalisis.Controllers
             try { return Ok(_service.GetAllUsuariosWithIntercambioInfo()); }
             catch { return NotFound(); }
         }
+        
+        [HttpGet("Monedas")]
+        public IActionResult GetMonedas()
+        {
+            try { return Ok(_service.GetAllMonedas()); }
+            catch { return NotFound(); }
+        }
 
         [HttpPost("NuevoEndpoint")]
         public IActionResult PostEndpoint([FromBody] EndpointCreateDto dto)

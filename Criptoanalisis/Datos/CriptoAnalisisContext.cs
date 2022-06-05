@@ -21,6 +21,7 @@ namespace Datos
         public DbSet<Parametro>? Parametros { get; set; }
         public DbSet<Intercambio>? Intercambios { get; set; }
         public DbSet<Usuario>? Usuarios { get; set; }
+        public DbSet<Moneda>? Monedas { get; set; }
         public DbSet<ParametroEndpoint>? ParametrosEndpoints { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
