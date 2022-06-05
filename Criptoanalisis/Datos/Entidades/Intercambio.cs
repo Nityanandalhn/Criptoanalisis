@@ -31,6 +31,6 @@ namespace Datos.Entidades
         [Column("reciente")]
         public double Reciente { get; set; }
 
-        public ICollection<Endpoints>? Endpoints { get; set; }
+        public Endpoints? Endpoint { get; set; }
     }
 }

@@ -17,7 +17,7 @@ namespace Datos.Mappers
             Nombre = intercambio.Nombre,
             Reciente = intercambio.Reciente,
             Volumen = intercambio.Volumen,
-            Endpoints = intercambio.Endpoints!.Select(x => x.Url)!
+            Endpoint = intercambio.Endpoint!.Url
         };
 
         public static Intercambio FromDto(IntercambioDto dto) => new()

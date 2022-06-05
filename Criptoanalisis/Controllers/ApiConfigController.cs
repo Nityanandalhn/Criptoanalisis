@@ -34,7 +34,6 @@ namespace Criptoanalisis.Controllers
             catch { return NotFound(); }
         }
 
-        //Esto debería ser una 1:M - WIP modificar modelo
         [HttpGet("Intercambios")]
         public IActionResult GetIntercambio()
         {

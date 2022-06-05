@@ -13,6 +13,6 @@
         public double Bajo { get; set; }
         public double Reciente { get; set; }
 
-        public IEnumerable<string>? Endpoints { get; set; }
+        public string? Endpoint { get; set; }
     }
 }

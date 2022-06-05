@@ -19,7 +19,7 @@ namespace Datos
         //static EndpointContext() => NpgsqlConnection.GlobalTypeMapper.MapEnum<Metodos>();
         public DbSet<Endpoints>? Endpoints { get; set; }
         public DbSet<Parametro>? Parametros { get; set; }
-        public DbSet<Intercambio>? Monedas { get; set; }
+        public DbSet<Intercambio>? Intercambios { get; set; }
         public DbSet<ParametroEndpoint>? ParametrosEndpoints { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
@@ -34,11 +34,7 @@ namespace Datos
             builder.HasDefaultSchema("public");
             builder.Entity<Endpoints>().HasMany(p => p.ParametrosEndpoints).WithOne(e => e.Endpoints).OnDelete(DeleteBehavior.SetNull);
             builder.Entity<Parametro>().HasMany(p => p.ParametrosEndpoints).WithOne(e => e.Parametros).OnDelete(DeleteBehavior.SetNull);
-            //Forma 'simple' de config una M:M (a partir de EF 5.0)
-            builder.Entity<Intercambio>().HasMany(m => m.Endpoints).WithMany(e => e.Monedas).UsingEntity<Dictionary<string, object>>("endpoint_moneda", 
-                j => j.HasOne<Endpoints>().WithMany().HasForeignKey("cod_edp").HasConstraintName("fk_endpoint").OnDelete(DeleteBehavior.SetNull),
-                j => j.HasOne<Intercambio>().WithMany().HasForeignKey("cod_mnd").HasConstraintName("fk_moneda").OnDelete(DeleteBehavior.SetNull)
-            );
+            builder.Entity<Intercambio>().HasOne(m => m.Endpoint).WithMany(e => e.Intercambios).HasForeignKey(x => x.Id);
             builder.Entity<ParametroEndpoint>().HasKey(pe => new { pe.ParametroId, pe.EndpointId });
             builder.Entity<ParametroEndpoint>().HasOne(pe => pe.Endpoints).WithMany(e => e.ParametrosEndpoints).HasForeignKey(pe => pe.EndpointId);
             builder.Entity<ParametroEndpoint>().HasOne(pe => pe.Parametros).WithMany(p => p.ParametrosEndpoints).HasForeignKey(pe => pe.ParametroId);

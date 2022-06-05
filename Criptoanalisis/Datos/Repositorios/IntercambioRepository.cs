@@ -11,14 +11,14 @@ namespace Datos.Repositorios
         protected CriptoAnalisisContext DbContext { get; set; }
         public IntercambioRepository() => DbContext = new();
 
-        public Intercambio Create(Intercambio parametro) => 
-            Persist(() => DbContext.Monedas!.Add(parametro));
+        public Intercambio Create(Intercambio intercambio) => 
+            Persist(() => DbContext.Intercambios!.Add(intercambio));
 
-        public Intercambio Delete(Intercambio parametro) => 
-            Persist(() => DbContext.Monedas!.Remove(parametro));
+        public Intercambio Delete(Intercambio intercambio) => 
+            Persist(() => DbContext.Intercambios!.Remove(intercambio));
 
         public IQueryable<Intercambio> Get() => 
-            DbContext.Monedas!.Include(e => e.Endpoints)!;
+            DbContext.Intercambios!.Include(e => e.Endpoint)!;
 
         public Intercambio GetAtPos(int pos)
         {
@@ -26,10 +26,10 @@ namespace Datos.Repositorios
         }
 
         public IQueryable<Intercambio> GetBy(Expression<Func<Intercambio, bool>> predicado) => 
-            DbContext.Monedas!.Where(predicado).Include(e => e.Endpoints)!;
+            DbContext.Intercambios!.Where(predicado).Include(e => e.Endpoint)!;
 
-        public Intercambio Update(Intercambio moneda) => 
-            Persist(() => DbContext.Monedas!.Update(moneda));
+        public Intercambio Update(Intercambio intercambio) => 
+            Persist(() => DbContext.Intercambios!.Update(intercambio));
 
         protected virtual Intercambio Persist(Func<EntityEntry<Intercambio>> act)
         {
