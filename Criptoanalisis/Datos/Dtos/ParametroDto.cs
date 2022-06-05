@@ -6,6 +6,6 @@
         public string? Valor { get; set; }
         public string? Mapea { get; set; }
         public int Id { get; set; }
-        public List<string>? Endpoints { get; set; }
+        public IEnumerable<string>? Endpoints { get; set; }
     }
 }
