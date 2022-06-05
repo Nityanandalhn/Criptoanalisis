@@ -25,7 +25,7 @@ namespace Datos
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
             => builder//.UseLazyLoadingProxies()
                     .UseNpgsql(Criptoanalisis.Properties.Resources.ConnectionStringProyecto)
-                    .LogTo(Console.WriteLine)
+                    .LogTo(x => Console.WriteLine(x), LogLevel.Information)
                     .EnableSensitiveDataLogging();
 
         protected override void OnModelCreating(ModelBuilder builder)

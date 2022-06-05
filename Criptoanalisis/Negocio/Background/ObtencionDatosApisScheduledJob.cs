@@ -14,21 +14,21 @@ namespace Negocio.Background
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation($"Iniciando tarea de obtención de datos.");
+            _logger.LogInformation("{} Iniciando proceso de obtención de datos de cripto.", $"{DateTimeOffset.Now:O}");
 
             stoppingToken.Register(() =>
-                _logger.LogCritical($"Se ha detenido el proceso de obtención de datos de apis."));
+                _logger.LogCritical("{} Se ha detenido el proceso de obtención de datos de cripto.", $"{DateTimeOffset.Now:O}"));
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                _logger.LogInformation($"{DateTimeOffset.Now} Leyendo configuración desde la DB.");
+                _logger.LogInformation("{} Leyendo configuración desde la DB.", $"{DateTimeOffset.Now:O}");
 
-                _service.GetAllEndpointsWithParameterInfo().ToList().ForEach(x => _logger.LogInformation(x.Url));
+                _service.GetAllEndpointsWithParameterInfo().ToList().ForEach(x => _logger.LogInformation("{} {}", $"{DateTimeOffset.Now:O}", x.Url));
 
                 await Task.Delay(60000, stoppingToken);
             }
 
-            _logger.LogInformation($"Proceso de obtención de datos completado.");
+            _logger.LogInformation("{} Proceso de obtención de datos de cripto terminado.", $"{DateTimeOffset.Now:O}");
         }
     }
 }
