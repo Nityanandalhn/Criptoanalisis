@@ -18,5 +18,6 @@ namespace Datos.Entidades
         [Column("id")]
         public int Id { get; set; }
         public ICollection<Intercambio>? Intercambios { get; set; }
+        public ICollection<Endpoints>? EndpointsActivos { get; set; }
     }
 }

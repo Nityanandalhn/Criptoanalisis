@@ -16,8 +16,8 @@ namespace Datos.Entidades
         [Column("fecha")]
         public DateTimeOffset Fecha { get; set; }
         [Required]
-        [Column("exchange")]
-        public string? Exchange { get; set; }
+        [Column("intercambiado")]
+        public string? Intercambiado { get; set; }
         [Column("volumen")]
         public double Volumen { get; set; }
         [Column("abierto")]

@@ -25,9 +25,14 @@ namespace Negocio.Background
             {
                 _logger.LogInformation("{} Leyendo configuración desde la DB.", FechaCompleta);
 
-                _service.GetAllEndpointsWithParameterInfo().ToList().ForEach(x => _logger.LogInformation("{} {}", FechaCompleta, x.Url));
+                _service.EndpointsConUsuariosActivos().ForEach(x =>
+                {
+                    _logger.LogInformation("{} Realizando consulta sobre {}", FechaCompleta, x.Url);
 
-                await Task.Delay(60000, stoppingToken);
+
+                });
+
+                await Task.Delay(10000, stoppingToken);
             }
 
             _logger.LogInformation("{} Proceso de obtención de datos de cripto terminado.", FechaCompleta);

@@ -6,5 +6,7 @@ namespace Datos.Interfaces
     public interface IEndpointsRepository : IRepoBase<Endpoints>
     {
         public void IncluirParametro(Endpoints edp, Parametro parametro);
+
+        public IQueryable<Endpoints> GetEndpointWithActiveUserInfo();
     }
 }

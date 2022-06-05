@@ -18,6 +18,6 @@ namespace Datos.Entidades
         public int Id { get; set; }
         public virtual ICollection<ParametroEndpoint>? ParametrosEndpoints { get; set; }
         public ICollection<Intercambio>? Intercambios { get; set; }
-
+        public ICollection<Usuario>? UsuariosActivos { get; set; }
     }
 }

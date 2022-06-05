@@ -11,7 +11,8 @@ namespace Datos.Mappers
             Login = usuario.Login,
             Mail = usuario.Mail,
             Pwd = usuario.Pwd,
-            Intercambios = usuario.Intercambios!.Select(x => x.Nombre)!
+            Intercambios = usuario.Intercambios!.Select(x => x.Nombre)!,
+            EndpointsActivos = usuario.EndpointsActivos!.Select(x => x.Url)!
         };
 
         public static Usuario FromDto(UsuarioDto dto) => new()

@@ -84,9 +84,7 @@ namespace Negocio.Servicios
         public Parametro BuscarParametroPorId(int id)
             => _parametrosRepo.GetBy(x => x.Id == id).ToList()[0];
 
-        public void ExtraerConfiguracionCompleta()
-        {
-
-        }
+        public List<Endpoints> EndpointsConUsuariosActivos() => 
+            _endpointRepo.GetEndpointWithActiveUserInfo().Where(x => x.UsuariosActivos!.Count > 0).ToList();
     }
 }

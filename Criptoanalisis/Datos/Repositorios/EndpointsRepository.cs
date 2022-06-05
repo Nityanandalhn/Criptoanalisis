@@ -54,5 +54,7 @@ namespace Datos.Repositorios
             });
             DbContext.SaveChanges();
         }
+
+        public IQueryable<Endpoints> GetEndpointWithActiveUserInfo() => DbContext.Endpoints!.Include(e => e.UsuariosActivos);
     }
 }

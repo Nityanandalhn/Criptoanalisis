@@ -18,7 +18,7 @@ namespace Datos.Repositorios
             Persist(() => DbContext.Usuarios!.Remove(usuario));
 
         public IQueryable<Usuario> Get() => 
-            DbContext.Usuarios!.Include(e => e.Intercambios)!;
+            DbContext.Usuarios!.Include(e => e.Intercambios).Include(e => e.EndpointsActivos);
 
         public Usuario GetAtPos(int pos)
         {
@@ -26,7 +26,7 @@ namespace Datos.Repositorios
         }
 
         public IQueryable<Usuario> GetBy(Expression<Func<Usuario, bool>> predicado) => 
-            DbContext.Usuarios!.Where(predicado).Include(e => e.Intercambios)!;
+            DbContext.Usuarios!.Where(predicado).Include(e => e.Intercambios).Include(e => e.EndpointsActivos)!;
 
         public Usuario Update(Usuario usuario) => 
             Persist(() => DbContext.Usuarios!.Update(usuario));
