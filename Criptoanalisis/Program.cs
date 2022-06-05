@@ -1,7 +1,8 @@
 using Negocio.Background;
-using Datos.Base;
 using Datos.Repositorios;
 using Negocio.Servicios;
+using Datos.Abstract.Implementaciones;
+using Datos.Abstract.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,8 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped(typeof(IRepoBase<,>), typeof(RepoBaseImpl<,>));
-builder.Services.AddScoped<EndpointRepository>();
+builder.Services.AddScoped<EndpointsRepository>();
 builder.Services.AddScoped<ParametrosRepository>();
 builder.Services.AddScoped<MonedaRepository>();
 builder.Services.AddScoped<ApiConfigurationService>();

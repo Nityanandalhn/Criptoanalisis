@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace Datos.Base
+namespace Datos.Abstract.Interfaces
 {
     //WIP - Generificando repositorio
-    public interface IRepoBase<Entidad,Contexto> : IDisposable where Entidad : class where Contexto : class
+    public interface IRepoBase<Entidad> : IDisposable where Entidad : class
     {
         /// <summary>
         /// Método que devuelve todas las entidades.

@@ -1,13 +1,12 @@
-﻿using Datos.Base;
-using Datos.Entidades;
-using Datos.Relaciones;
+﻿using Datos.Entidades;
+using Datos.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Linq.Expressions;
 
 namespace Datos.Repositorios
 {
-    public class ParametrosRepository : IRepoBase<Parametros, CriptoAnalisisContext>
+    public class ParametrosRepository : IParametrosRepository
     {
         protected CriptoAnalisisContext DbContext { get; set; }
         public ParametrosRepository() => DbContext = new();

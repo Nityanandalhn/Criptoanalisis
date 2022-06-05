@@ -1,5 +1,4 @@
 ﻿using Datos;
-using Datos.Base;
 using Datos.Dtos;
 using Datos.Entidades;
 using Datos.Repositorios;

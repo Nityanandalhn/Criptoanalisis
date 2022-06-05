@@ -1,10 +1,10 @@
-﻿using Datos.Base;
+﻿using Datos.Abstract.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Criptoanalisis.Controllers.Abstract
 {
     //WIP - Generificar crud 
-    public abstract class CrudController<Entity, Context> : ControllerBase where Entity : class where Context : class
+    /*public abstract class CrudController<Entity, Context> : ControllerBase where Entity : class where Context : class
     {
         protected readonly IRepoBase<Entity, Context> _repo;
         protected readonly ILogger<CrudController<Entity, Context>> _logger;
@@ -53,5 +53,5 @@ namespace Criptoanalisis.Controllers.Abstract
             try { return Ok(_repo.Delete(elemento)); }
             catch { return NotFound(); }
         }
-    }
+    }*/
 }

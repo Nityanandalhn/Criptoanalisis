@@ -1,5 +1,5 @@
-﻿using Datos.Base;
-using Datos.Entidades;
+﻿using Datos.Entidades;
+using Datos.Interfaces;
 using Datos.Relaciones;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -7,10 +7,10 @@ using System.Linq.Expressions;
 
 namespace Datos.Repositorios
 {
-    public class EndpointRepository : IRepoBase<Endpoints, CriptoAnalisisContext>
+    public class EndpointsRepository : IEndpointsRepository
     {
         protected CriptoAnalisisContext DbContext { get; set; }
-        public EndpointRepository() => DbContext = new();
+        public EndpointsRepository() => DbContext = new();
 
         public Endpoints Create(Endpoints endpoint) => 
             Persist(() => DbContext.Endpoints!.Add(endpoint));

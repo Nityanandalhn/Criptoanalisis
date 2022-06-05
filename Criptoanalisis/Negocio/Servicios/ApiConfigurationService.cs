@@ -1,5 +1,6 @@
 ﻿using Datos.Dtos;
 using Datos.Entidades;
+using Datos.Interfaces;
 using Datos.Mappers;
 using Datos.Relaciones;
 using Datos.Repositorios;
@@ -10,11 +11,11 @@ namespace Negocio.Servicios
     public class ApiConfigurationService
     {
         protected readonly ILogger<ApiConfigurationService> _logger;
-        protected readonly EndpointRepository _endpointRepo;
-        protected readonly ParametrosRepository _parametrosRepo;
-        protected readonly MonedaRepository _monedasRepo;
+        protected readonly IEndpointsRepository _endpointRepo;
+        protected readonly IParametrosRepository _parametrosRepo;
+        protected readonly IMonedaRepository _monedasRepo;
 
-        public ApiConfigurationService(ILogger<ApiConfigurationService> logger, EndpointRepository endpointRepo, ParametrosRepository parametrosRepo, MonedaRepository monedasRepo)
+        public ApiConfigurationService(ILogger<ApiConfigurationService> logger, EndpointsRepository endpointRepo, ParametrosRepository parametrosRepo, MonedaRepository monedasRepo)
         {
             _logger = logger;
             _endpointRepo = endpointRepo;

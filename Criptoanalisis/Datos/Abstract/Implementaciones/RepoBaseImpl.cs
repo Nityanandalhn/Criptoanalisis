@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Datos.Abstract.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Linq.Expressions;
 
-namespace Datos.Base
+namespace Datos.Abstract.Implementaciones
 {
     //WIP - Generificando repositorio
-    public class RepoBaseImpl<Entidad,Contexto> : IRepoBase<Entidad, Contexto> where Entidad : class where Contexto : DbContext, new()
+    /*public class RepoBaseImpl<Entidad, Contexto> : IRepoBase<Entidad, Contexto> where Entidad : class where Contexto : DbContext, new()
     {
         /// <summary>
         /// Contexto de persistencia.
@@ -14,7 +15,7 @@ namespace Datos.Base
         /// <summary>
         /// Constructor que inicializa el contexto de persistencia.
         /// </summary>
-        public RepoBaseImpl() => RepoContext = new ();
+        public RepoBaseImpl() => RepoContext = new();
         /// <summary>
         /// Método que devuelve todas las entidades.
         /// </summary>
@@ -80,5 +81,5 @@ namespace Datos.Base
             RepoContext.Dispose();
             GC.SuppressFinalize(this);
         }
-    }
+    }*/
 }
