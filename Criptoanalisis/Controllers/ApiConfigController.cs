@@ -3,7 +3,7 @@ using Datos.Base;
 using Datos.Dtos;
 using Datos.Entidades;
 using Datos.Repositorios;
-using Datos.Servicios;
+using Negocio.Servicios;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
 

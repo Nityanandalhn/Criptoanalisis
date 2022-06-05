@@ -1,6 +1,7 @@
+using Negocio.Background;
 using Datos.Base;
 using Datos.Repositorios;
-using Datos.Servicios;
+using Negocio.Servicios;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,8 @@ builder.Services.AddScoped<MonedaRepository>();
 builder.Services.AddScoped<ApiConfigurationService>();
 //Aunque al final voy a tratar la entrada/salida de datos con dtos, dejo activa la propiedad que evita entrar en bucle a la hora de serializar un objeto.
 builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles);
+
+builder.Services.AddHostedService<ObtencionDatosApis>();
 
 var app = builder.Build();
 

@@ -5,23 +5,28 @@ using Datos.Relaciones;
 using Datos.Repositorios;
 using System.Linq.Expressions;
 
-namespace Datos.Servicios
+namespace Negocio.Servicios
 {
     public class ApiConfigurationService
     {
+        protected readonly ILogger<ApiConfigurationService> _logger;
         protected readonly EndpointRepository _endpointRepo;
         protected readonly ParametrosRepository _parametrosRepo;
         protected readonly MonedaRepository _monedasRepo;
 
-        public ApiConfigurationService(EndpointRepository endpointRepo, ParametrosRepository parametrosRepo, MonedaRepository monedasRepo)
+        public ApiConfigurationService(ILogger<ApiConfigurationService> logger, EndpointRepository endpointRepo, ParametrosRepository parametrosRepo, MonedaRepository monedasRepo)
         {
+            _logger = logger;
             _endpointRepo = endpointRepo;
             _parametrosRepo = parametrosRepo;
             _monedasRepo = monedasRepo;
         }
 
-        public IEnumerable<EndpointDto> GetAllEndpointsWithParameterInfo() => 
-            _endpointRepo.Get().Select(x => EndpointMapper.FromEntity(x));
+        public IEnumerable<EndpointDto> GetAllEndpointsWithParameterInfo()
+        {
+            _logger.LogInformation("Buscando todos los endpoint");
+            return _endpointRepo.Get().Select(x => EndpointMapper.FromEntity(x));
+        }
 
         public List<ParametroDto> GetAllParametersWithEndpointInfo() =>
             _parametrosRepo.Get().Select(x => ParametrosMapper.FromEntity(x)).ToList();
