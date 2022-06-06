@@ -45,9 +45,6 @@ namespace Negocio.Background
                             _logger.LogInformation("Endpoint id {} Intercambio id {}", endpoint.Id, r.Id);
                             r.Fecha = DateTimeOffset.UtcNow;
                             r.EndpointId = endpoint.Id;
-                            //endpoint.Intercambios!.Add(r);
-                            //r.Endpoint = new() { Id = endpoint.Id };
-                            //_service.Guardar();
                             _service.CreateIntercambioDesdeProceso(r);
                         });
                         _service.UpdateEndpoint(endpoint);
