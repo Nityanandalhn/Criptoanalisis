@@ -44,6 +44,7 @@ namespace Negocio.Background
                         {
                             _logger.LogInformation("Endpoint id {} Intercambio id {}", endpoint.Id, r.Id);
                             r.Fecha = DateTimeOffset.UtcNow;
+                            r.EndpointId = endpoint.Id;
                             //endpoint.Intercambios!.Add(r);
                             //r.Endpoint = new() { Id = endpoint.Id };
                             //_service.Guardar();
@@ -53,7 +54,7 @@ namespace Negocio.Background
                     });
                     
                 }
-                await Task.Delay(10000, stoppingToken);
+                await Task.Delay(60000, stoppingToken);
             }
 
             _logger.LogInformation("{} Proceso de obtención de datos de cripto terminado.", FechaCompleta);

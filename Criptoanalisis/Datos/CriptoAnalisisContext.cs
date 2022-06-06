@@ -36,9 +36,9 @@ namespace Datos
             builder.HasDefaultSchema("public");
             builder.Entity<Endpoints>().HasMany(p => p.ParametrosEndpoints).WithOne(e => e.Endpoints).OnDelete(DeleteBehavior.SetNull);
             builder.Entity<Parametro>().HasMany(p => p.ParametrosEndpoints).WithOne(e => e.Parametros).OnDelete(DeleteBehavior.SetNull);
-            builder.Entity<Intercambio>().HasOne(m => m.Endpoint).WithMany(e => e.Intercambios).HasForeignKey(x => x.Id);
+            builder.Entity<Intercambio>().HasOne(m => m.Endpoint).WithMany(e => e.Intercambios).HasForeignKey(x => x.EndpointId);
             builder.Entity<Intercambio>().Property(x => x.Id).ValueGeneratedOnAdd();
-            builder.Entity<Endpoints>().HasMany(p => p.Intercambios).WithOne(e => e.Endpoint).HasForeignKey(x => x.Id);
+            builder.Entity<Endpoints>().HasMany(p => p.Intercambios).WithOne(e => e.Endpoint);
             builder.Entity<Usuario>().HasMany(m => m.Intercambios).WithMany(e => e.Usuarios).UsingEntity<Dictionary<string, object>>("intercambio_usuario", 
                 j => j.HasOne<Intercambio>().WithMany().HasForeignKey("cod_itc").HasConstraintName("fk_intercambio").OnDelete(DeleteBehavior.SetNull),
                 j => j.HasOne<Usuario>().WithMany().HasForeignKey("cod_usr").HasConstraintName("fk_usuario").OnDelete(DeleteBehavior.SetNull)

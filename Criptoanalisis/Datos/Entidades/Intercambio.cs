@@ -32,6 +32,8 @@ namespace Datos.Entidades
         [Column("reciente")]
         public double Reciente { get; set; }
 
+        [Column("cod_edp")]
+        public int EndpointId { get; set; }
         public Endpoints? Endpoint { get; set; }
 
         public ICollection<Usuario>? Usuarios { get; set; }
