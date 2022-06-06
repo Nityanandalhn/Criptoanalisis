@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 
 namespace Negocio.Servicios
 {
-    public class ApiConfigurationService
+    public class ApiConfigurationService : IDisposable
     {
         protected readonly ILogger<ApiConfigurationService> _logger;
         protected readonly IEndpointsRepository _endpointRepo;
@@ -15,6 +15,7 @@ namespace Negocio.Servicios
         protected readonly IIntercambioRepository _intercambiosRepo;
         protected readonly IUsuarioRepository _usuarioRepo;
         protected readonly IMonedaRepository _monedaRepo;
+        private bool disposedValue;
 
         public ApiConfigurationService(ILogger<ApiConfigurationService> logger, 
             EndpointsRepository endpointRepo,
@@ -105,5 +106,38 @@ namespace Negocio.Servicios
             _intercambiosRepo.CrearDesdeProceso(intercambio);
 
         public void Guardar() => _endpointRepo.GuardarCambios();
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    _endpointRepo.Dispose();
+                    _intercambiosRepo.Dispose();
+                    _monedaRepo.Dispose();
+                    _parametrosRepo.Dispose();
+                    _usuarioRepo.Dispose();
+                }
+
+                // TODO: liberar los recursos no administrados (objetos no administrados) y reemplazar el finalizador
+                // TODO: establecer los campos grandes como NULL
+                disposedValue = true;
+            }
+        }
+
+        // // TODO: reemplazar el finalizador solo si "Dispose(bool disposing)" tiene código para liberar los recursos no administrados
+        // ~ApiConfigurationService()
+        // {
+        //     // No cambie este código. Coloque el código de limpieza en el método "Dispose(bool disposing)".
+        //     Dispose(disposing: false);
+        // }
+
+        public void Dispose()
+        {
+            // No cambie este código. Coloque el código de limpieza en el método "Dispose(bool disposing)".
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
     }
 }

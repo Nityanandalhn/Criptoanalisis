@@ -23,8 +23,8 @@ namespace Datos.Entidades
         public double Volumen { get; set; }
         [Column("abierto")]
         public double Abierto { get; set; }
-        [Column("cerrado")]
-        public double Cerrado { get; set; }
+        [Column("ultimo")]
+        public double Ultimo { get; set; }
         [Column("alto")]
         public double Alto { get; set; }
         [Column("bajo")]

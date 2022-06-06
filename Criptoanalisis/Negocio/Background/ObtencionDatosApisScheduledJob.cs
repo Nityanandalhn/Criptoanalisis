@@ -27,29 +27,30 @@ namespace Negocio.Background
             {
                 _logger.LogInformation("{} Leyendo configuración desde la DB.", FechaCompleta);
                 {
-                    ApiConfigurationService? _service = _factory.CreateScope().ServiceProvider.GetRequiredService<ApiConfigurationService>();
-                    _service.EndpointsConUsuariosActivos().ForEach(endpoint =>
+                    using (ApiConfigurationService? _service = _factory.CreateScope().ServiceProvider.GetRequiredService<ApiConfigurationService>())
                     {
-                        Dictionary<string, string> parametrosBusqueda = new();
-                        endpoint.ParametrosEndpoints!.ToList().ForEach(parm =>
+                        _service.EndpointsConUsuariosActivos().ForEach(endpoint =>
                         {
-                            _logger.LogInformation("{} Incluyendo parametro de filtrado {} asignado a la propiedad {}", FechaCompleta, parm!.Parametros!.Valor!, parm!.Parametros!.Mapea!);
-                            parametrosBusqueda.Add(parm!.Parametros!.Mapea!, parm!.Parametros!.Valor!);
-                        });
-                        _logger.LogInformation("{} Realizando consulta sobre {}", FechaCompleta, endpoint.Url);
+                            Dictionary<string, string> parametrosBusqueda = new();
+                            endpoint.ParametrosEndpoints!.ToList().ForEach(parm =>
+                            {
+                                _logger.LogInformation("{} Incluyendo parametro de filtrado {} asignado a la propiedad {}", FechaCompleta, parm!.Parametros!.Valor!, parm!.Parametros!.Mapea!);
+                                parametrosBusqueda.Add(parm!.Parametros!.Mapea!, parm!.Parametros!.Valor!);
+                            });
+                            _logger.LogInformation("{} Realizando consulta sobre {}", FechaCompleta, endpoint.Url);
 
-                        List<Intercambio> respuestas = JsonUtils.ConsultarApi<Intercambio>(endpoint.Url!, parametrosBusqueda, _service.GetAllMonedas().Select(m => m.Nombre).ToList()!);
+                            List<Intercambio> respuestas = JsonUtils.ConsultarApi<Intercambio>(endpoint.Url!, parametrosBusqueda, _service.GetAllMonedas().Select(m => m.Nombre).ToList()!);
 
-                        respuestas.ForEach(r =>
-                        {
-                            _logger.LogInformation("Endpoint id {} Intercambio id {}", endpoint.Id, r.Id);
-                            r.Fecha = DateTimeOffset.UtcNow;
-                            r.EndpointId = endpoint.Id;
-                            _service.CreateIntercambioDesdeProceso(r);
+                            respuestas.ForEach(r =>
+                            {
+                                _logger.LogInformation("Endpoint id {} Intercambio id {}", endpoint.Id, r.Id);
+                                r.Fecha = DateTimeOffset.UtcNow;
+                                r.EndpointId = endpoint.Id;
+                                _service.CreateIntercambioDesdeProceso(r);
+                            });
+                            _service.UpdateEndpoint(endpoint);
                         });
-                        _service.UpdateEndpoint(endpoint);
-                    });
-                    
+                    }
                 }
                 await Task.Delay(60000, stoppingToken);
             }
