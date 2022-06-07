@@ -117,10 +117,10 @@ namespace Negocio.Servicios
             }
         }
 
-        ~ApiConfigurationService()
-        {
-            Dispose(disposing: false);
-        }
+        //~ApiConfigurationService()
+        //{
+        //    Dispose(disposing: false);
+        //}
 
         public void Dispose()
         {
