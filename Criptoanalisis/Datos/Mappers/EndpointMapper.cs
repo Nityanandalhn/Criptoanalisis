@@ -25,5 +25,12 @@ namespace Datos.Mappers
             Url = dto.Url,
             Tipo = dto.Tipo
         };
+
+        public static Endpoints UpdateFromCreateDto(EndpointCreateDto dto, Endpoints endpoint)
+        {
+            endpoint.Url = dto.Url ?? endpoint.Url;
+            endpoint.Tipo = dto.Tipo ?? endpoint.Tipo;
+            return endpoint;
+        }
     }
 }

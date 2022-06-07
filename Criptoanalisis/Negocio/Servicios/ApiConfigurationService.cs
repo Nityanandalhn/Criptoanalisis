@@ -59,18 +59,11 @@ namespace Negocio.Servicios
         public Parametro CreateParametro(ParametroCreateDto dto) =>
             _parametrosRepo.Create(ParametroMapper.FromCreateDto(dto));
 
-        public Endpoints UpdateEndpoint(EndpointCreateDto dto, int id)
-        {
-            Endpoints edp = BuscarEndpointPorId(id);
-            edp.Url = dto.Url ?? edp.Url;
-            edp.Tipo = dto.Tipo ?? edp.Tipo;
-            return _endpointRepo.Update(edp);
-        }
+        public Endpoints UpdateEndpoint(EndpointCreateDto dto, int id) 
+            => _endpointRepo.Update(EndpointMapper.UpdateFromCreateDto(dto, BuscarEndpointPorId(id)));
 
-        public Endpoints UpdateEndpoint(Endpoints edp)
-        {
-            return _endpointRepo.Update(edp);
-        }
+        public Endpoints UpdateEndpoint(Endpoints edp) 
+            => _endpointRepo.Update(edp);
 
         public Endpoints DeleteEndpoint(EndpointDto dto) =>
             _endpointRepo.Delete(EndpointMapper.FromDto(dto));
