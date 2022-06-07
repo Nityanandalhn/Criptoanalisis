@@ -75,10 +75,8 @@ namespace Negocio.Servicios
         public Endpoints DeleteEndpoint(EndpointDto dto) =>
             _endpointRepo.Delete(EndpointMapper.FromDto(dto));
 
-        public MonedaDto? CreateMoneda(MonedaDto dto)
-        {
-            return MonedaMapper.FromEntity(_monedaRepo.Create(MonedaMapper.FromDto(dto)));
-        }
+        public MonedaDto? CreateMoneda(MonedaDto dto) 
+            => MonedaMapper.FromEntity(_monedaRepo.Create(MonedaMapper.FromDto(dto)));
 
         public EndpointDto IncluirParametroEnEndpoint(ParametroDto dto, int id)
         {
@@ -122,22 +120,17 @@ namespace Negocio.Servicios
                     _usuarioRepo.Dispose();
                 }
 
-                // TODO: liberar los recursos no administrados (objetos no administrados) y reemplazar el finalizador
-                // TODO: establecer los campos grandes como NULL
                 disposedValue = true;
             }
         }
 
-        // // TODO: reemplazar el finalizador solo si "Dispose(bool disposing)" tiene código para liberar los recursos no administrados
-        // ~ApiConfigurationService()
-        // {
-        //     // No cambie este código. Coloque el código de limpieza en el método "Dispose(bool disposing)".
-        //     Dispose(disposing: false);
-        // }
+        ~ApiConfigurationService()
+        {
+            Dispose(disposing: false);
+        }
 
         public void Dispose()
         {
-            // No cambie este código. Coloque el código de limpieza en el método "Dispose(bool disposing)".
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
