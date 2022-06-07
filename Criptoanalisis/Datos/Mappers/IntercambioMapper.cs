@@ -24,18 +24,5 @@ namespace Datos.Mappers
         {
             Id = dto.Id,
         };
-
-        public static Intercambio FromCreateDto(IntercambioCreateDto dto) => new()
-        {
-            Abierto = dto.Abierto,
-            Alto = dto.Alto,
-            Bajo = dto.Bajo,
-            Ultimo = dto.Ultimo,
-            Intercambiado = dto.Intercambiado,
-            Fecha = dto.Fecha,
-            Nombre = dto.Nombre,
-            Reciente = dto.Reciente,
-            Volumen = dto.Volumen
-        };
     }
 }

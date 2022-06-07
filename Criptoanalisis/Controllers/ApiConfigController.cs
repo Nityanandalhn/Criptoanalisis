@@ -78,10 +78,10 @@ namespace Criptoanalisis.Controllers
             catch { return BadRequest(); }
         }
 
-        [HttpPost("NuevoIntercambio")]
-        public IActionResult PostIntercambio([FromBody] IntercambioCreateDto dto)
+        [HttpPost("NuevaMoneda")]
+        public IActionResult PostMoneda([FromBody] MonedaDto dto)
         {
-            try { return Created(nameof(GetEndpoint), _service.CreateIntercambio(dto)); }
+            try { return Created(nameof(GetEndpoint), _service.CreateMoneda(dto)); }
             catch { return BadRequest(); }
         }
     }

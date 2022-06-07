@@ -47,8 +47,8 @@ namespace Negocio.Servicios
         public List<UsuarioDto> GetAllUsuariosWithIntercambioInfo() =>
             _usuarioRepo.Get().Select(x => UsuarioMapper.FromEntity(x)).ToList();
 
-        public List<Moneda> GetAllMonedas() =>
-            _monedaRepo.Get().ToList();
+        public List<MonedaDto> GetAllMonedas() =>
+            _monedaRepo.Get().Select(x => MonedaMapper.FromEntity(x)).ToList();
 
         public List<Endpoints> GetEndpointBy(Expression<Func<Endpoints, bool>> predicado) => 
             _endpointRepo.GetBy(predicado).ToList();
@@ -75,6 +75,11 @@ namespace Negocio.Servicios
         public Endpoints DeleteEndpoint(EndpointDto dto) =>
             _endpointRepo.Delete(EndpointMapper.FromDto(dto));
 
+        public MonedaDto? CreateMoneda(MonedaDto dto)
+        {
+            return MonedaMapper.FromEntity(_monedaRepo.Create(MonedaMapper.FromDto(dto)));
+        }
+
         public EndpointDto IncluirParametroEnEndpoint(ParametroDto dto, int id)
         {
             Parametro param;
@@ -98,9 +103,6 @@ namespace Negocio.Servicios
 
         public List<Endpoints> EndpointsConUsuariosActivos() => 
             _endpointRepo.GetAllEndpointInfo().Where(x => x.UsuariosActivos!.Count > 0).ToList();
-
-        public Intercambio CreateIntercambio(IntercambioCreateDto intercambio) 
-            => _intercambiosRepo.Create(IntercambioMapper.FromCreateDto(intercambio));
 
         public Intercambio CreateIntercambioDesdeProceso(Intercambio intercambio) => 
             _intercambiosRepo.CrearDesdeProceso(intercambio);

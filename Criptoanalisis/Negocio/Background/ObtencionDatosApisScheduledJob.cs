@@ -43,7 +43,8 @@ namespace Negocio.Background
 
                             respuestas.ForEach(r =>
                             {
-                                _logger.LogInformation("Endpoint id {} Intercambio id {}", endpoint.Id, r.Id);
+                                //Pendiente de mejorar la lógica para realizar composiciones de monedas en base a los datos
+                                _logger.LogInformation("Almacenando intercambio de {} con {}", r.Nombre, r.Intercambiado);
                                 r.Fecha = DateTimeOffset.UtcNow;
                                 r.EndpointId = endpoint.Id;
                                 _service.CreateIntercambioDesdeProceso(r);
