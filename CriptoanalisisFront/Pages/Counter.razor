@@ -54,7 +54,7 @@
     private string? InputValue { get; set; }
     private int currentCount = 0;
     public string Placeholder { get; set; } = "AAAAAAAAAAAAAAAA@AAAAAAAAAAAAA.AAAAAAAAA";
-    public string TextArea { get; set; }
+    public string? TextArea { get; set; }
     private void IncrementCount()
     {
         currentCount++;
@@ -62,6 +62,6 @@
 
     private void Prueba()
     {
-        Placeholder = TextArea;
+        Placeholder = TextArea ?? "A";
     }
 }

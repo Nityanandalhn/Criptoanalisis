@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Criptoanalisis", "Criptoana
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testing", "Testing\Testing.csproj", "{127D938A-525A-46D5-ADB0-E10BE1CE89AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CriptoanalisisFront", "CriptoanalisisFront\CriptoanalisisFront.csproj", "{762E0437-4518-4F79-BB58-23CE6238AA3D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CriptoanalisisFront", "CriptoanalisisFront\CriptoanalisisFront.csproj", "{762E0437-4518-4F79-BB58-23CE6238AA3D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
