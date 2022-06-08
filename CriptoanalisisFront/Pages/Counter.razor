@@ -1,0 +1,67 @@
+﻿@page "/counter"
+
+<PageTitle>Counter</PageTitle>
+
+<h1>Counter</h1>
+
+<p role="status">Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+<BSForm IsRow="true" Gutters="Gutters.Medium" IsBasic="true">
+    <BSCol Column="auto">
+        <BSLabel IsHidden="true">Email</BSLabel>
+        <BSInput @onclick="Prueba" InputType="InputType.Email" placeholder="@Placeholder" IsPlainText="true" Value="@("email@example.com")"/>
+    </BSCol>
+    <BSCol Column="auto">
+        <BSLabel IsHidden="true">Password</BSLabel>
+        <BSInput InputType="InputType.Password" Value="@("")"/>
+    </BSCol>
+    <BSCol Column="auto">
+        <BSButton Color="BSColor.Primary" IsSubmit="true" MarginBottom="Margins.Medium">Confirm identity</BSButton>
+    </BSCol>
+</BSForm>
+<div class="mb-3">
+    <BSLabel>Email address</BSLabel>
+    <BSInput InputType="InputType.Email" placeholder="@Placeholder" Value="@("")"/>
+</div>
+<div class="mb-3">
+    <BSLabel>Example Textarea</BSLabel>
+    <BSInput InputType="InputType.TextArea" @bind-Value="TextArea"/>
+</div>
+
+<p>
+    <label>
+        Normal Blazor binding: 
+        <input @bind="InputValue" />
+    </label>
+</p>
+
+<p>
+    <label>
+        Demonstration of equivalent HTML binding: 
+        <input value="@InputValue"
+            @onchange="@((ChangeEventArgs __e) => InputValue = __e?.Value?.ToString())" />
+    </label>
+</p>
+
+<p>
+    <code>InputValue</code>: @InputValue
+</p>
+
+
+@code {
+    private string? InputValue { get; set; }
+    private int currentCount = 0;
+    public string Placeholder { get; set; } = "AAAAAAAAAAAAAAAA@AAAAAAAAAAAAA.AAAAAAAAA";
+    public string TextArea { get; set; }
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+
+    private void Prueba()
+    {
+        Placeholder = TextArea;
+    }
+}

@@ -27,6 +27,7 @@ namespace Negocio.Background
             {
                 _logger.LogInformation("{} Leyendo configuración desde la DB.", FechaCompleta);
                 {
+                    //Apartado 7 problemas encontrados
                     using (ApiConfigurationService? _service = _factory.CreateScope().ServiceProvider.GetRequiredService<ApiConfigurationService>())
                     {
                         _service.EndpointsConUsuariosActivos().ForEach(endpoint =>
