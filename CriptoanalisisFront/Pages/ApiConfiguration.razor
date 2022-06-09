@@ -1,0 +1,21 @@
+﻿@inject HttpClient Http
+@page "/config"
+
+@foreach(Moneda m in Monedas)
+{
+    <h1>@m.Nombre</h1>
+}
+
+@code {
+    public List<Moneda> Monedas { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Monedas = await Http.GetFromJsonAsync<List<Moneda>>("https://localhost:7289/api/ApiConfig/Monedas");
+    }
+
+    public class Moneda
+    {
+    public string Nombre { get; set; }
+    }
+}
