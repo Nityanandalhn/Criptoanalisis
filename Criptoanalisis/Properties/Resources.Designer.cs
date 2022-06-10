@@ -61,7 +61,7 @@ namespace Criptoanalisis.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Host=localhost;Database=Crypto;Username=postgres;Password=admin.
+        ///   Busca una cadena traducida similar a Host=localhost;Database=Crypto;Username=postgres;Password=admin;Include Error Detail=true.
         /// </summary>
         internal static string ConnectionString {
             get {
@@ -70,7 +70,7 @@ namespace Criptoanalisis.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Host=localhost;Database=Proyecto;Username=postgres;Password=admin.
+        ///   Busca una cadena traducida similar a Host=localhost;Database=Proyecto;Username=postgres;Password=admin;Include Error Detail=true.
         /// </summary>
         internal static string ConnectionStringProyecto {
             get {
