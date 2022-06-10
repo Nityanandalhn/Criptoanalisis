@@ -1,0 +1,204 @@
+﻿@inject HttpClient Http
+@page "/config"
+@using Entidades
+
+<BSContainer Container="Container.Fluid">
+    <BSRow Align="Align.Start">
+        <BSCol>
+            <div class="@BS.Input_Group mb-3">
+                <span class="@BS.Input_Group_Text">URL</span>
+                <BSInput IsDisabled=@Cargando InputType="InputType.Text" placeholder="URL"  @bind-Value="@EndpointURL"/>
+            </div>
+           <div class="@BS.Input_Group mb-3">
+                <span class="@BS.Input_Group_Text">Nombre</span>
+                <BSInput IsDisabled=@Cargando InputType="InputType.Text" placeholder="Nombre"  @bind-Value="@Nombre"/>
+            </div>
+            <div class="@BS.Input_Group mb-3">
+                <span class="@BS.Input_Group_Text">Intercambiado</span>
+                <BSInput IsDisabled=@Cargando InputType="InputType.Text" placeholder="Intercambiado"  @bind-Value="@Intercambiado"/>
+            </div>
+            <div class="@BS.Input_Group mb-3">
+                <span class="@BS.Input_Group_Text">Volumen</span>
+                <BSInput IsDisabled=@Cargando InputType="InputType.Text" placeholder="Volumen"  @bind-Value="@Volumen"/>
+            </div>
+            <div class="@BS.Input_Group mb-3">
+                <span class="@BS.Input_Group_Text">Abierto</span>
+                <BSInput IsDisabled=@Cargando InputType="InputType.Text" placeholder="Abierto"  @bind-Value="@Abierto"/>
+            </div>
+            <div class="@BS.Input_Group mb-3">
+                <span class="@BS.Input_Group_Text">Ultimo</span>
+                <BSInput IsDisabled=@Cargando InputType="InputType.Text" placeholder="Ultimo"  @bind-Value="@Ultimo"/>
+            </div>
+            <div class="@BS.Input_Group mb-3">
+                <span class="@BS.Input_Group_Text">Alto</span>
+                <BSInput IsDisabled=@Cargando InputType="InputType.Text" placeholder="Alto"  @bind-Value="@Alto"/>
+            </div>
+            <div class="@BS.Input_Group mb-3">
+                <span class="@BS.Input_Group_Text">Bajo</span>
+                <BSInput IsDisabled=@Cargando InputType="InputType.Text" placeholder="Bajo"  @bind-Value="@Bajo"/>
+            </div>
+            <BSButton IsDisabled=@Cargando Color="BSColor.Primary" MarginBottom="Margins.Medium" OnClick="InsertarNuevoEndpoint">Nuevo Endpoint</BSButton>
+        </BSCol>
+    </BSRow>
+    <BSRow Align="Align.Center">
+        <BSCol>
+            <table class="table">
+                @foreach(Endpoints endpoint in Endps!)
+                {
+                    <tbody>
+                        <tr>
+                            <td colspan="2">@endpoint.URL</td>
+                        </tr>
+                        @foreach(Parametro param in @endpoint.Parametros!)
+                        {
+                            <tr>
+                                <td>@param.Valor</td>
+                                <td>@param.Mapea</td>
+                            </tr>
+                        }
+                    </tbody>
+                }
+            </table>
+        </BSCol>
+    </BSRow>
+    <BSRow Align="Align.End">
+        <BSCol>
+            <BSInput InputType="InputType.Select" @bind-Value="_monedasSeleccionadas" size="@Monedas!.Count">
+                @foreach(Moneda moneda in Monedas)
+                {
+                    <option value="@moneda.Nombre">@moneda.Nombre</option>
+                }
+            </BSInput>
+            @String.Join(", ", _monedasSeleccionadas)
+        </BSCol>
+    </BSRow>
+</BSContainer>
+
+@code {
+    private string[] _monedasSeleccionadas = new string[]{};
+    private List<Moneda>? Monedas { get; set; } = new();
+    private List<Endpoints>? Endps { get; set; } = new();
+
+    private string Nombre { get; set; }          = "";
+    private string Intercambiado { get; set; }   = "";
+    private string Volumen { get; set; }         = "";
+    private string Abierto { get; set; }         = "";
+    private string Ultimo { get; set; }          = "";
+    private string Alto { get; set; }            = "";
+    private string Bajo { get; set; }            = "";
+
+    private string EndpointURL { get; set; } = "";
+
+    private bool Cargando { get; set; } = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Cargando = true;
+        Monedas = await Http.GetFromJsonAsync<List<Moneda>>("https://localhost:7289/api/ApiConfig/Monedas");
+        Endps = await Http.GetFromJsonAsync<List<Endpoints>>("https://localhost:7289/api/ApiConfig/EndpointsPorUsuario/1");
+        Cargando = false;
+    }
+
+    private class Moneda
+    {
+        public string? Nombre { get; set; }
+    }
+
+    private class Parametro {
+        public string? Valor { get; set; }
+        public string? Mapea { get; set; }
+        public string? Tipo { get; set; } = "salida";
+    }
+
+    private class Endpoints
+    {
+        public List<Parametro>? Parametros { get; set; }
+        public string? URL { get; set; }
+        public int Id { get; set; }
+    }
+
+    private class CreateEndpoints
+    {
+        public string? URL { get; set; }
+        public string Tipo { get; set; } = "GET";
+    }
+
+    private class CreateParam
+    {
+        public string? Valor { get; set; }
+        public string? Tipo { get; set; } = "salida";
+        public string? Mapea { get; set; }
+    }
+
+    private async void InsertarNuevoEndpoint()
+    {
+        Cargando = true;
+        var respuesta = await Http.PostAsJsonAsync<CreateEndpoints>("https://localhost:7289/api/ApiConfig/NuevoEndpoint/1", new CreateEndpoints()
+        {
+            URL = EndpointURL
+        });
+        if(respuesta.StatusCode == System.Net.HttpStatusCode.Created)
+        {
+            var edp = await respuesta.Content.ReadFromJsonAsync<Endpoints>();
+            Console.WriteLine(edp!.Id);
+
+            VincularParametroConEndpoint(new CreateParam()
+            {
+                Mapea = "Nombre",
+                Valor = Nombre
+            }, edp.Id);
+            VincularParametroConEndpoint(new CreateParam()
+            {
+                Mapea = "Intercambiado",
+                Valor = Intercambiado
+            }, edp.Id);
+            VincularParametroConEndpoint(new CreateParam()
+            {
+                Mapea = "Volumen",
+                Valor = Volumen
+            }, edp.Id);
+            VincularParametroConEndpoint(new CreateParam()
+            {
+                Mapea = "Abierto",
+                Valor = Abierto
+            }, edp.Id);
+            VincularParametroConEndpoint(new CreateParam()
+            {
+                Mapea = "Ultimo",
+                Valor = Ultimo
+            }, edp.Id);
+            VincularParametroConEndpoint(new CreateParam()
+            {
+                Mapea = "Alto",
+                Valor = Alto
+            }, edp.Id);
+            VincularParametroConEndpoint(new CreateParam()
+            {
+                Mapea = "Bajo",
+                Valor = Bajo
+            }, edp.Id);
+        }
+        Console.WriteLine(respuesta);
+        LimpiarInputs();
+        Monedas = await Http.GetFromJsonAsync<List<Moneda>>("https://localhost:7289/api/ApiConfig/Monedas");
+        Endps = await Http.GetFromJsonAsync<List<Endpoints>>("https://localhost:7289/api/ApiConfig/EndpointsPorUsuario/1");
+        Cargando = false;
+        StateHasChanged();
+        Console.WriteLine("TERMINADO");
+    }
+
+    private async void VincularParametroConEndpoint(CreateParam param, int edpId) 
+    => await Http.PutAsJsonAsync<CreateParam>($"https://localhost:7289/api/ApiConfig/IncluirParametroEnEndpoint/{edpId}", param);
+
+    private void LimpiarInputs()
+    {
+        Nombre  = "";
+        Intercambiado = "";
+        Volumen = "";
+        Abierto = "";
+        Ultimo  = "";
+        Alto    = "";
+        Bajo    = "";
+        EndpointURL = "";
+    }
+}

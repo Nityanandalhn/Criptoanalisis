@@ -118,9 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ConnectionString" xml:space="preserve">
-    <value>Host=localhost;Database=Crypto;Username=postgres;Password=admin</value>
+    <value>Host=localhost;Database=Crypto;Username=postgres;Password=admin;Include Error Detail=true</value>
   </data>
   <data name="ConnectionStringProyecto" xml:space="preserve">
-    <value>Host=localhost;Database=Proyecto;Username=postgres;Password=admin</value>
+    <value>Host=localhost;Database=Proyecto;Username=postgres;Password=admin;Include Error Detail=true</value>
   </data>
 </root>

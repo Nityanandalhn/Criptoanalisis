@@ -1,0 +1,106 @@
+﻿@page "/fetchdata"
+@inject HttpClient Http
+
+<PageTitle>Weather forecast</PageTitle>
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Temp. (C)</th>
+                <th>Temp. (F)</th>
+                <th>Summary</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in forecasts)
+            {
+                <tr>
+                    <td>@forecast.Date.ToShortDateString()</td>
+                    <td>@forecast.TemperatureC</td>
+                    <td>@forecast.TemperatureF</td>
+                    <td>@forecast.Summary</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <BSTable Color="OTableColor" IsBordered="OIsBordered" IsBorderLess="OIsBorderLess" IsCaptionTop="OIsCaptionTop" IsStriped="OIsStriped">
+    <caption>List of users</caption>
+    <BSTHead>
+        <BSTR>
+            <BSTD>#</BSTD>
+            <BSTD>First</BSTD>
+            <BSTD>Last</BSTD>
+            <BSTD>Handle</BSTD>
+        </BSTR>
+    </BSTHead>
+    <BSTBody>
+        <BSTR>
+            <BSTD AlignRow="OAlignRow" Color="OTDColor" IsActive="OIsActive">1</BSTD>
+            <BSTD>John</BSTD>
+            <BSTD>Doe</BSTD>
+            <BSTD>JohnDoe <br/>media.com</BSTD>
+        </BSTR>
+        <BSTR AlignRow="OTRAlignRow" Color="OTRColor" IsActive="OTRIsActive">
+            <BSTD>2</BSTD>
+            <BSTD>Jane</BSTD>
+            <BSTD>Doe</BSTD>
+            <BSTD>JaneDoe <br/>media.com</BSTD>
+        </BSTR>
+    </BSTBody>
+    <BSTFoot>
+        <BSTR>
+            <BSTD ColSpan="4">Spanned Table Footer Here</BSTD>
+        </BSTR>
+
+    </BSTFoot>
+</BSTable>
+
+}
+
+@code {
+        // BSTable Parameters
+    private BSColor OTableColor { get; set; } = BSColor.Default; // Not Set
+    private bool OIsBordered { get; set; } 
+    private bool OIsBorderLess { get; set; }
+    private bool OIsCaptionTop { get; set; }
+    private bool OIsStriped { get; set; }
+    
+    // BSTR Parameters
+    private AlignRow OTRAlignRow { get; set; }
+    private BSColor OTRColor { get; set; } = BSColor.Danger; // Not Set
+    private bool OTRIsActive { get; set; }
+    // BSTD Parameters
+    private AlignRow OAlignRow { get; set; }
+    private BSColor OTDColor { get; set; } = BSColor.Default; // Not Set
+    private bool OIsActive { get; set; }
+
+    private WeatherForecast[]? forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
+    }
+
+    public class WeatherForecast
+    {
+        public DateTime Date { get; set; }
+
+        public int TemperatureC { get; set; }
+
+        public string? Summary { get; set; }
+
+        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    }
+}

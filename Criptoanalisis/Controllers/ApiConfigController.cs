@@ -27,6 +27,13 @@ namespace Criptoanalisis.Controllers
             catch { return NotFound(); }
         }
 
+        [HttpGet("EndpointsPorUsuario/{userId}")]
+        public IActionResult GetEndpointPorUsuario(int userId)
+        {
+            try { return Ok(_service.GetAllEndpointsByUserId(userId)); }
+            catch { return NotFound(); }
+        }
+
         [HttpGet("Parametros")]
         public IActionResult GetParametro()
         {
@@ -59,6 +66,15 @@ namespace Criptoanalisis.Controllers
         public IActionResult PostEndpoint([FromBody] EndpointCreateDto dto)
         {
             try { return Created(nameof(GetEndpoint), _service.CreateEndpoint(dto)); }
+            catch (ApplicationException) { return Conflict(); }
+            catch { return BadRequest(); }
+        }
+
+        [HttpPost("NuevoEndpoint/{userId}")]
+        public IActionResult PostEndpoint([FromBody] EndpointCreateDto dto, int userId)
+        {
+            try { return Created(nameof(GetEndpoint), _service.CreateEndpointPorUsuario(dto, userId)); }
+            catch (ApplicationException) { return Conflict(); }
             catch { return BadRequest(); }
         }
 

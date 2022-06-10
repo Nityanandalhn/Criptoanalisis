@@ -59,6 +59,18 @@ Console.WriteLine("\nRealizando llamada a CRYPTOCOMPARE\n");
 test = ConsultarApi<Modelo>(url, para, monedas);
 test.ForEach(x => Console.WriteLine(x));
 
+url = "https://api.coindesk.com/v1/bpi/currentprice.json";
+para = new()
+{
+    { "Nombre", "code" },
+    { "Intercambiado", "rate" },
+    { "Alto", "rate_float" },
+};
+monedas = new() { "USD", "GBP", "EUR" };
+Console.WriteLine("\nRealizando llamada a coindesk\n");
+test = ConsultarApi<Modelo>(url, para, monedas);
+test.ForEach(x => Console.WriteLine(x));
+
 List<T> ConsultarApi<T>(string url, Dictionary<string,string> parametros, List<string> filtros) where T: new()
 {
     //Busco mi atributo necesario para poder realizar el filtrado, si no existe termino el proceso
