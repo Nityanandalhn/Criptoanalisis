@@ -107,5 +107,13 @@ namespace Criptoanalisis.Controllers
             try { return Created(nameof(GetEndpoint), _service.CreateMoneda(dto)); }
             catch { return BadRequest(); }
         }
+
+        [HttpDelete("EliminarEndpointPorUrl")]
+        public IActionResult PostMoneda([FromBody] string url)
+        {
+            try { return Created(nameof(GetEndpoint), _service.DeleteEndpoint(url)); }
+            catch (ApplicationException) { return NotFound($"No existe endpoint con esta url: {url}"); } 
+            catch { return BadRequest(); }
+        }
     }
 }

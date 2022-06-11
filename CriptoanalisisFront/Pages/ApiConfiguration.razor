@@ -24,10 +24,13 @@
             <BSTable IsBordered="true" IsResponsive="true" IsStriped="true" IsCaptionTop="true">
                 <caption>Listado de endpoints activos</caption>
                 <BSTBody>
-                    @foreach(Endpoints endpoint in Endps!)
+                    @foreach(VisualEndpoint endpoint in Endps!)
                     {
                         <BSTR AlignRow="AlignRow.Middle">
-                            <BSTD ColSpan="2" Color="BSColor.Info">@endpoint.URL</BSTD>
+                            <BSTD @onclick="() => AlternarEndpoint(endpoint)" ColSpan="@endpoint.ColSpan" Color="BSColor.Info">@endpoint.URL</BSTD>
+                            <BSTD hidden="@endpoint.BtnEliminarEscondido">
+                                <BSButton OnClick="() => EliminarEndpoint(endpoint)" Color="BSColor.Danger">X</BSButton>
+                            </BSTD>
                         </BSTR>
                         @foreach(Parametro param in @endpoint.Parametros!)
                         {
@@ -59,12 +62,14 @@
 @code {
     private string[] _monedasSeleccionadas = new string[]{};
     private List<Moneda>? Monedas { get; set; } = new();
-    private List<Endpoints>? Endps { get; set; } = new();
+    private List<VisualEndpoint>? Endps { get; set; } = new();
     private List<CreateParamDto>? CreateParams { get; set; }
 
     private string EndpointURL { get; set; } = "";
 
     private bool Cargando { get; set; } = true;
+
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -103,7 +108,7 @@
         };
 
         Monedas = await Http.GetFromJsonAsync<List<Moneda>>("https://localhost:7289/api/ApiConfig/Monedas");
-        Endps = await Http.GetFromJsonAsync<List<Endpoints>>("https://localhost:7289/api/ApiConfig/EndpointsPorUsuario/1");
+        Endps = await Http.GetFromJsonAsync<List<VisualEndpoint>>("https://localhost:7289/api/ApiConfig/EndpointsPorUsuario/1");
         Cargando = false;
     }
 
@@ -118,11 +123,13 @@
         public string? Tipo { get; set; } = "salida";
     }
 
-    private class Endpoints
+    private class VisualEndpoint
     {
         public List<Parametro>? Parametros { get; set; }
         public string? URL { get; set; }
         public int Id { get; set; }
+        public bool BtnEliminarEscondido { get; set; } = true;
+        public string ColSpan { get => BtnEliminarEscondido ? "2" : "1"; }
     }
 
     private class CreateEndpointsDto
@@ -147,26 +154,52 @@
         });
         if(respuesta.StatusCode == System.Net.HttpStatusCode.Created)
         {
-            var edp = await respuesta.Content.ReadFromJsonAsync<Endpoints>();
+            var edp = await respuesta.Content.ReadFromJsonAsync<VisualEndpoint>();
             Console.WriteLine(edp!.Id);
-
+            RecargarDatos();
             CreateParams!.ForEach(x => VincularParametroConEndpoint(x, edp.Id));
         }
         Console.WriteLine(respuesta);
         LimpiarInputs();
-        Monedas = await Http.GetFromJsonAsync<List<Moneda>>("https://localhost:7289/api/ApiConfig/Monedas");
-        Endps = await Http.GetFromJsonAsync<List<Endpoints>>("https://localhost:7289/api/ApiConfig/EndpointsPorUsuario/1");
+
         Cargando = false;
         StateHasChanged();
         Console.WriteLine("TERMINADO");
     }
 
     private async void VincularParametroConEndpoint(CreateParamDto param, int edpId) 
-    => await Http.PutAsJsonAsync<CreateParamDto>($"https://localhost:7289/api/ApiConfig/IncluirParametroEnEndpoint/{edpId}", param);
+        => await Http.PutAsJsonAsync<CreateParamDto>($"https://localhost:7289/api/ApiConfig/IncluirParametroEnEndpoint/{edpId}", param);
 
     private void LimpiarInputs()
     {
         EndpointURL = "";
         CreateParams!.ForEach(x => x.Valor = "");
+    }
+    private void AlternarEndpoint(VisualEndpoint edp)
+    {
+        edp.BtnEliminarEscondido = !edp.BtnEliminarEscondido;
+        StateHasChanged();
+    }
+
+    private async void EliminarEndpoint(VisualEndpoint edp)
+    {
+        Cargando = true;
+        var peticion = new HttpRequestMessage()
+        {
+            Method = HttpMethod.Delete,
+            RequestUri = new Uri("https://localhost:7289/api/ApiConfig/EliminarEndpointPorUrl"),
+            Content = JsonContent.Create(edp.URL)
+        };
+        var respuesta = await Http.SendAsync(peticion);
+        RecargarDatos();
+        Cargando = false;
+        StateHasChanged();
+    }
+
+    private async void RecargarDatos()
+    {
+        Monedas = await Http.GetFromJsonAsync<List<Moneda>>("https://localhost:7289/api/ApiConfig/Monedas");
+        Endps = await Http.GetFromJsonAsync<List<VisualEndpoint>>("https://localhost:7289/api/ApiConfig/EndpointsPorUsuario/1");
+        StateHasChanged();
     }
 }

@@ -91,6 +91,28 @@ namespace Negocio.Servicios
         public Endpoints DeleteEndpoint(EndpointDto dto) =>
             _endpointRepo.Delete(EndpointMapper.FromDto(dto));
 
+        public Endpoints DeleteEndpoint(string url)
+        {
+            if(!_endpointRepo.GetBy(x => x.Url == url).Any()) 
+                throw new ApplicationException();
+
+            var edp = _endpointRepo.GetAllEndpointInfo().Where(x => x.Url == url).First();
+            try
+            {
+                if(edp.UsuariosActivos != null && edp.UsuariosActivos.Count > 0)
+                    foreach (var usr in edp.UsuariosActivos)
+                        edp.UsuariosActivos.Remove(usr);
+
+                _endpointRepo.GuardarCambios();
+                _endpointRepo.Delete(edp);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical("{}", ex);
+            }
+            return edp;
+        }
+
         public MonedaDto? CreateMoneda(MonedaDto dto) 
             => MonedaMapper.FromEntity(_monedaRepo.Create(MonedaMapper.FromDto(dto)));
 

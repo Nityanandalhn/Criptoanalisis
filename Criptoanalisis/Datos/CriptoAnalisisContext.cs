@@ -41,21 +41,25 @@ namespace Datos
             builder.Entity<Parametro>().Property(x => x.Id).ValueGeneratedOnAdd();
             builder.Entity<Endpoints>().Property(x => x.Id).ValueGeneratedOnAdd();
             builder.Entity<Endpoints>().HasMany(p => p.Intercambios).WithOne(e => e.Endpoint);
+            builder.Entity<Endpoints>().HasMany(e => e.UsuariosActivos).WithMany(u => u.EndpointsActivos).UsingEntity<Dictionary<string, object>>("usuario_endpoint",
+                j => j.HasOne<Usuario>().WithMany().HasForeignKey("cod_usr").HasConstraintName("fk_usuario").OnDelete(DeleteBehavior.Cascade),
+                j => j.HasOne<Endpoints>().WithMany().HasForeignKey("cod_edp").HasConstraintName("fk_endpoint").OnDelete(DeleteBehavior.Cascade)
+            );
             builder.Entity<Usuario>().HasMany(m => m.Intercambios).WithMany(e => e.Usuarios).UsingEntity<Dictionary<string, object>>("intercambio_usuario", 
                 j => j.HasOne<Intercambio>().WithMany().HasForeignKey("cod_itc").HasConstraintName("fk_intercambio").OnDelete(DeleteBehavior.SetNull),
                 j => j.HasOne<Usuario>().WithMany().HasForeignKey("cod_usr").HasConstraintName("fk_usuario").OnDelete(DeleteBehavior.SetNull)
             );
             builder.Entity<Usuario>().HasMany(m => m.EndpointsActivos).WithMany(e => e.UsuariosActivos).UsingEntity<Dictionary<string, object>>("usuario_endpoint",
-                j => j.HasOne<Endpoints>().WithMany().HasForeignKey("cod_edp").HasConstraintName("fk_endpoint").OnDelete(DeleteBehavior.SetNull),
-                j => j.HasOne<Usuario>().WithMany().HasForeignKey("cod_usr").HasConstraintName("fk_usuario").OnDelete(DeleteBehavior.SetNull)
+                j => j.HasOne<Endpoints>().WithMany().HasForeignKey("cod_edp").HasConstraintName("fk_endpoint").OnDelete(DeleteBehavior.Cascade),
+                j => j.HasOne<Usuario>().WithMany().HasForeignKey("cod_usr").HasConstraintName("fk_usuario").OnDelete(DeleteBehavior.Cascade)
             );
             builder.Entity<Usuario>().HasMany(m => m.MonedasActivas).WithMany(e => e.Usuarios).UsingEntity<Dictionary<string, object>>("usuario_moneda",
                 j => j.HasOne<Moneda>().WithMany().HasForeignKey("nom_mnd").HasConstraintName("fk_moneda").OnDelete(DeleteBehavior.SetNull),
                 j => j.HasOne<Usuario>().WithMany().HasForeignKey("cod_usr").HasConstraintName("fk_usuario").OnDelete(DeleteBehavior.SetNull)
             );
             builder.Entity<ParametroEndpoint>().HasKey(pe => new { pe.ParametroId, pe.EndpointId });
-            builder.Entity<ParametroEndpoint>().HasOne(pe => pe.Endpoints).WithMany(e => e.ParametrosEndpoints).HasForeignKey(pe => pe.EndpointId);
-            builder.Entity<ParametroEndpoint>().HasOne(pe => pe.Parametros).WithMany(p => p.ParametrosEndpoints).HasForeignKey(pe => pe.ParametroId);
+            builder.Entity<ParametroEndpoint>().HasOne(pe => pe.Endpoints).WithMany(e => e.ParametrosEndpoints).HasForeignKey(pe => pe.EndpointId).OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<ParametroEndpoint>().HasOne(pe => pe.Parametros).WithMany(p => p.ParametrosEndpoints).HasForeignKey(pe => pe.ParametroId).OnDelete(DeleteBehavior.Cascade);
         }
         //.Entity<Entidades.Endpoint>();
         //.HasPostgresEnum<Metodos>()
