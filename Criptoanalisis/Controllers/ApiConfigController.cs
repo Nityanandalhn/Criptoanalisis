@@ -48,6 +48,13 @@ namespace Criptoanalisis.Controllers
             catch { return NotFound(); }
         }
 
+        [HttpGet("Intercambios/{limit}")]
+        public IActionResult GetIntercambio(int limit)
+        {
+            try { return Ok(_service.GetLastNIntercambios(limit)); }
+            catch { return NotFound(); }
+        }
+
         [HttpGet("Usuarios")]
         public IActionResult GetUsuarios()
         {

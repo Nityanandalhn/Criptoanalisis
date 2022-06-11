@@ -40,17 +40,23 @@ namespace Negocio.Background
                             });
                             _logger.LogInformation("{} Realizando consulta sobre {}", FechaCompleta, endpoint.Url);
 
-                            List<Intercambio> respuestas = JsonUtils.ConsultarApi<Intercambio>(endpoint.Url!, parametrosBusqueda, _service.GetAllMonedas().Select(m => m.Nombre).ToList()!);
-
-                            respuestas.ForEach(r =>
+                            try
                             {
+                                List<Intercambio> respuestas = JsonUtils.ConsultarApi<Intercambio>(endpoint.Url!, parametrosBusqueda, _service.GetAllMonedas().Select(m => m.Nombre).ToList()!);
+
+                                respuestas.ForEach(r =>
+                                {
                                 //Pendiente de mejorar la lógica para realizar composiciones de monedas en base a los datos
-                                _logger.LogInformation("Almacenando intercambio de {} con {}", r.Nombre, r.Intercambiado);
-                                r.Fecha = DateTimeOffset.UtcNow;
-                                r.EndpointId = endpoint.Id;
-                                _service.CreateIntercambioDesdeProceso(r);
-                            });
-                            _service.UpdateEndpoint(endpoint);
+                                    _logger.LogInformation("Almacenando intercambio de {} con {}", r.Nombre, r.Intercambiado);
+                                    r.Fecha = DateTimeOffset.UtcNow;
+                                    r.EndpointId = endpoint.Id;
+                                    _service.CreateIntercambioDesdeProceso(r);
+                                });
+                                _service.UpdateEndpoint(endpoint);
+                            } catch (Exception ex)
+                            {
+                                _logger.LogCritical("No ha sido posible leer los datos de {}. {}", endpoint.Url, ex);
+                            }
                         });
                     }
                 }
