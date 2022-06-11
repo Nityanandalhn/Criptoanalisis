@@ -21,23 +21,24 @@
     </BSRow>
     <BSRow Align="Align.Center">
         <BSCol>
-            <table class="table">
-                @foreach(Endpoints endpoint in Endps!)
-                {
-                    <tbody>
-                        <tr>
-                            <td colspan="2">@endpoint.URL</td>
-                        </tr>
+            <BSTable IsBordered="true" IsResponsive="true" IsStriped="true" IsCaptionTop="true">
+                <caption>Listado de endpoints activos</caption>
+                <BSTBody>
+                    @foreach(Endpoints endpoint in Endps!)
+                    {
+                        <BSTR AlignRow="AlignRow.Middle">
+                            <BSTD ColSpan="2" Color="BSColor.Info">@endpoint.URL</BSTD>
+                        </BSTR>
                         @foreach(Parametro param in @endpoint.Parametros!)
                         {
-                            <tr>
-                                <td>@param.Valor</td>
-                                <td>@param.Mapea</td>
-                            </tr>
+                            <BSTR AlignRow="AlignRow.Middle">
+                                <BSTD>@param.Valor</BSTD>
+                                <BSTD>@param.Mapea</BSTD>
+                            </BSTR>
                         }
-                    </tbody>
-                }
-            </table>
+                    }
+                </BSTBody>
+            </BSTable>
         </BSCol>
     </BSRow>
     <BSRow Align="Align.End">
@@ -48,6 +49,8 @@
                     <option value="@moneda.Nombre">@moneda.Nombre</option>
                 }
             </BSInput>
+        </BSCol>
+        <BSCol>
             @String.Join(", ", _monedasSeleccionadas)
         </BSCol>
     </BSRow>
