@@ -48,10 +48,17 @@ namespace Criptoanalisis.Controllers
             catch { return NotFound(); }
         }
 
-        [HttpGet("Intercambios/{limit}")]
-        public IActionResult GetIntercambio(int limit)
+        [HttpPost("Intercambios/{limit}")]
+        public IActionResult GetIntercambio(int limit, [FromBody] string url = "")
         {
-            try { return Ok(_service.GetLastNIntercambios(limit)); }
+            try { return Ok(_service.GetLastNIntercambios(limit, url)); }
+            catch { return NotFound(); }
+        }
+
+        [HttpPost("Intercambios/{limit}/{par}")]
+        public IActionResult GetIntercambioPorPar(int limit, string par, [FromBody] string url = "")
+        {
+            try { return Ok(_service.GetLastNIntercambios(limit, url, par)); }
             catch { return NotFound(); }
         }
 
@@ -108,10 +115,20 @@ namespace Criptoanalisis.Controllers
             catch { return BadRequest(); }
         }
 
+        [HttpDelete("EliminarMoneda")]
+        public IActionResult DeleteMoneda([FromBody] string nombre)
+        {
+            try { return Accepted(nameof(GetEndpoint), _service.DeleteMoneda(new MonedaDto()
+            {
+                Nombre = nombre
+            })); }
+            catch { return BadRequest(); }
+        }
+
         [HttpDelete("EliminarEndpointPorUrl")]
         public IActionResult PostMoneda([FromBody] string url)
         {
-            try { return Created(nameof(GetEndpoint), _service.DeleteEndpoint(url)); }
+            try { return Accepted(nameof(GetEndpoint), _service.DeleteEndpoint(url)); }
             catch (ApplicationException) { return NotFound($"No existe endpoint con esta url: {url}"); } 
             catch { return BadRequest(); }
         }

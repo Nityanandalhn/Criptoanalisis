@@ -11,7 +11,6 @@ namespace Datos.Mappers
             Abierto = intercambio.Abierto,
             Alto = intercambio.Alto,
             Bajo = intercambio.Bajo,
-            Ultimo = intercambio.Ultimo,
             Intercambiado = intercambio.Intercambiado,
             Fecha = intercambio.Fecha,
             Nombre = intercambio.Nombre,

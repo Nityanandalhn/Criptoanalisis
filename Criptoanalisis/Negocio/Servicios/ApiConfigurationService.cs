@@ -44,8 +44,8 @@ namespace Negocio.Servicios
             return _usuarioRepo.Get().Where(x => x.Id == userId).First()!.EndpointsActivos!.Select(x => EndpointMapper.FromEntity(x));
         }
 
-        internal List<IntercambioDto> GetLastNIntercambios(int limit) => 
-            _intercambiosRepo.Get().OrderByDescending(x => x.Fecha).Take(limit).Select(x => IntercambioMapper.FromEntity(x)).ToList();
+        internal List<IntercambioDto> GetLastNIntercambios(int limit, string url, string par = "") => 
+            _intercambiosRepo.Get().Where(x => x.Endpoint!.Url!.Contains(url) && x.Nombre!.Contains(par)).OrderByDescending(x => x.Fecha).Take(limit).Select(x => IntercambioMapper.FromEntity(x)).ToList();
 
         public List<ParametroDto> GetAllParametersWithEndpointInfo() =>
             _parametrosRepo.Get().Select(x => ParametroMapper.FromEntity(x)).ToList();
@@ -90,6 +90,9 @@ namespace Negocio.Servicios
 
         public Endpoints DeleteEndpoint(EndpointDto dto) =>
             _endpointRepo.Delete(EndpointMapper.FromDto(dto));
+
+        internal MonedaDto? DeleteMoneda(MonedaDto dto) 
+            => MonedaMapper.FromEntity(_monedaRepo.Delete(MonedaMapper.FromDto(dto)));
 
         public Endpoints DeleteEndpoint(string url)
         {

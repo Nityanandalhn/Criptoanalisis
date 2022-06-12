@@ -46,6 +46,13 @@
     </BSRow>
     <BSRow Align="Align.End">
         <BSCol>
+            <div class="@BS.Input_Group mb-3">
+                <span class="@BS.Input_Group_Text">Nueva Moneda</span>
+                <BSInput IsDisabled=@Cargando InputType="InputType.Text" placeholder="Moneda" @bind-Value="@NombreNuevaMoneda"/>
+                <BSButton OnClick="NuevaMoneda" Color="BSColor.Primary">Incluir Moneda</BSButton>
+            </div>
+        </BSCol>
+        <BSCol>
             <BSInput InputType="InputType.Select" @bind-Value="_monedasSeleccionadas" size="@Monedas!.Count">
                 @foreach(Moneda moneda in Monedas)
                 {
@@ -55,6 +62,7 @@
         </BSCol>
         <BSCol>
             @String.Join(", ", _monedasSeleccionadas)
+            <BSButton OnClick="EliminarMonedasSeleccionadas" Color="BSColor.Danger">Quitar Monedas Seleccionadas</BSButton>
         </BSCol>
     </BSRow>
 </BSContainer>
@@ -66,10 +74,9 @@
     private List<CreateParamDto>? CreateParams { get; set; }
 
     private string EndpointURL { get; set; } = "";
+    public string NombreNuevaMoneda { get; set; } = "";
 
     private bool Cargando { get; set; } = true;
-
-
 
     protected override async Task OnInitializedAsync()
     {
@@ -191,6 +198,44 @@
             Content = JsonContent.Create(edp.URL)
         };
         var respuesta = await Http.SendAsync(peticion);
+        Console.WriteLine(respuesta);
+        RecargarDatos();
+        Cargando = false;
+        StateHasChanged();
+    }
+
+    private void EliminarMonedasSeleccionadas() 
+    {
+        Cargando = true;
+        Parallel.ForEach(_monedasSeleccionadas, async moneda =>
+        {
+            var peticion = new HttpRequestMessage()
+                {
+                    Method = HttpMethod.Delete,
+                    RequestUri = new Uri("https://localhost:7289/api/ApiConfig/EliminarMoneda"),
+                    Content = JsonContent.Create(moneda)
+                };
+            var respuesta = await Http.SendAsync(peticion);
+            Console.WriteLine(respuesta);
+            RecargarDatos();
+        });
+
+        Cargando = false;
+        StateHasChanged();
+    }
+
+    private async void NuevaMoneda() 
+    {
+        Cargando = true;
+        if (NombreNuevaMoneda != "")
+        {
+            var respuesta = await Http.PostAsJsonAsync<Moneda>("https://localhost:7289/api/ApiConfig/NuevaMoneda", new Moneda()
+                {
+                    Nombre = NombreNuevaMoneda
+                });
+
+            Console.WriteLine(respuesta);
+        }
         RecargarDatos();
         Cargando = false;
         StateHasChanged();
