@@ -33,7 +33,7 @@ namespace Negocio.Background
                         _service.EndpointsConUsuariosActivos().ForEach(endpoint =>
                         {
                             Dictionary<string, string> parametrosBusqueda = new();
-                            endpoint.ParametrosEndpoints!.ToList().ForEach(parm =>
+                            Parallel.ForEach(endpoint.ParametrosEndpoints!.ToList(), parm =>
                             {
                                 _logger.LogInformation("{} Incluyendo parametro de filtrado {} asignado a la propiedad {}", FechaCompleta, parm!.Parametros!.Valor!, parm!.Parametros!.Mapea!);
                                 parametrosBusqueda.Add(parm!.Parametros!.Mapea!, parm!.Parametros!.Valor!);
@@ -60,7 +60,7 @@ namespace Negocio.Background
                         });
                     }
                 }
-                await Task.Delay(60000, stoppingToken);
+                await Task.Delay(1000, stoppingToken);
             }
 
             _logger.LogInformation("{} Proceso de obtención de datos de cripto terminado.", FechaCompleta);
