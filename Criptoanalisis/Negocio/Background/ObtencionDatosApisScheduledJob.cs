@@ -60,7 +60,7 @@ namespace Negocio.Background
                         });
                     }
                 }
-                await Task.Delay(60000, stoppingToken);
+                await Task.Delay(1000, stoppingToken);
             }
 
             _logger.LogInformation("{} Proceso de obtención de datos de cripto terminado.", FechaCompleta);
